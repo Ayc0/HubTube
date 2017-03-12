@@ -15,13 +15,14 @@ export default (props) => {
     <GridTile
       title={<b>{props.video.snippet.title}</b>}
       subtitle={props.video.snippet.channelTitle}
-      actionIcon={<IconButton onClick={() => send(props.video.id.videoId)}>
+      actionIcon={<IconButton onClick={() => send(props.video)}>
           {props.icon}
         </IconButton>}
     >
       <img src={props.video.snippet.thumbnails.high.url}
-        onClick={() => send(props.video.id.videoId)}
+        onClick={() => send(props.video)}
         className="thumbnails"
+        alt={props.video.snippet.title}
       />
     </GridTile>
   );

@@ -7,7 +7,8 @@ import { Card } from 'material-ui/Card';
 import { searchVideos, searchVideosSuggestions } from '../actions/youtubeAPI';
 
 import SearchBar from '../components/searchBar';
-import ResultVideosForSend from '../components/resultVideosForSend';
+// import ResultVideosForSend from '../components/resultVideosForSend';
+import CurrentVideo from '../components/currentVideo';
 
 class Download extends Component {
   render() {
@@ -17,7 +18,8 @@ class Download extends Component {
           <SearchBar submit={this.props.searchVideos}
             onTextChange={console.log /* this.props.searchVideosSuggestions */}
           />
-          <ResultVideosForSend list={this.props.searchVideosList} />
+          <CurrentVideo />
+          {/* <ResultVideosForSend list={this.props.searchVideosList} /> */}
         </Card>
       </div>
     );

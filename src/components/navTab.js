@@ -9,10 +9,9 @@ class TabNav extends Component {
   constructor(props) {
     super(props);
 
-    const id = Math.random().toString(36).substring(2, 25);
     this.state = {
       slideIndex: 0,
-      id,
+      id: -1,
       canChangeTab: true,
     };
     this.askForDownload = this.askForDownload.bind(this);
@@ -25,6 +24,7 @@ class TabNav extends Component {
     this.props.socket.on('replyForDownload', this.replyForDownload);
     this.props.socket.on('handleDownloadState', this.handleDownloadState);
     this.props.socket.emit('askForDownload', { id: this.state.id });
+    this.props.socket.on('connexion', (msg) => { console.log(msg); this.setState({ id: msg.id }); });
   }
 
   handleChangeTab(value) {
@@ -54,9 +54,6 @@ class TabNav extends Component {
     }
     if (this.state.slideIndex !== nextState.slideIndex && nextState.slideIndex === 0) {
       this.props.socket.emit('handleDownloadState', { id: this.state.id, canChangeTab: true });
-    }
-    if (this.state.id !== nextState.id) {
-      nextState.id = this.state.id;
     }
     return true;
   }

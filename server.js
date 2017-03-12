@@ -9,16 +9,24 @@ const server = http.createServer(app);
 
 /* Configuration */
 app.use(express.static(`${__dirname}/build`));
+app.get('*', (req, res) => {
+  res.sendFile('build/index.html');
+});
+
 app.set('port', 8000);
 
 if (process.env.NODE_ENV === 'development') {
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 }
 
+let activeDownloadTab = 0;
+
 /* Socket.io Communication */
 const io = sockerIo.listen(server);
 io.sockets.on('connection', (socket) => {
-  socket.emit('message', 'Vous êtes bien connecté !');
+  console.log(`${socket.id} s'est connecté.`);
+
+  socket.emit('connexion', { id: socket.id, message: 'Vous êtes connectés !' });
 
   // Quand le serveur reçoit un signal de type "message" du client
   socket.on('sendId', (message) => {
@@ -37,12 +45,15 @@ io.sockets.on('connection', (socket) => {
 
   socket.on('handleDownloadState', (message) => {
     console.log(`${message.id} a ${message.canChangeTab ? 'libéré' : 'pris'} la tab`);
+    if (!message.canChangeTab) {
+      activeDownloadTab = message.id;
+    }
     socket.broadcast.emit('handleDownloadState', message);
   });
 
-  socket.on('sendVideoId', (message) => {
-    console.log(`La vidéo ${message.videoId} a été envoyée`);
-    io.sockets.emit('sendVideoId', message);
+  socket.on('sendVideo', (message) => {
+    console.log(`La vidéo ${message.video.id.videoId} a été envoyée`);
+    io.to(activeDownloadTab).emit('sendVideo', message);
   });
 });
 

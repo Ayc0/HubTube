@@ -8,11 +8,12 @@ class ResultVideosForSend extends Component {
   constructor(props) {
     super(props);
 
-    this.sendVideoId = this.sendVideoId.bind(this);
+    this.sendVideo = this.sendVideo.bind(this);
   }
 
-  sendVideoId(videoId) {
-    this.props.socket.emit('sendVideoId', { videoId });
+  sendVideo(video) {
+    console.log(video);
+    this.props.socket.emit('sendVideo', { video });
   }
   render() {
     return (
@@ -20,7 +21,7 @@ class ResultVideosForSend extends Component {
         <VideosList
           list={this.props.list}
           icon={<Send color="white" hoverColor="#d5d5d5"/>}
-          send={this.sendVideoId}
+          send={this.sendVideo}
         />
       </div>
     );

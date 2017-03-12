@@ -15,7 +15,7 @@ class Upload extends Component {
       <div style={{ margin: '2em' }}>
         <Card style={{ padding: '1rem' }}>
           <SearchBar submit={this.props.searchVideos}
-            onTextChange={this.props.searchVideosSuggestions}
+            onTextChange={console.log /* this.props.searchVideosSuggestions */}
           />
           <ResultVideosForSend list={this.props.searchVideosList} />
         </Card>
