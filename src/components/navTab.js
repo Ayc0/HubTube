@@ -37,9 +37,9 @@ class TabNav extends Component {
   handleChangeTab(value) {
     this.setState({ slideIndex: value });
   }
-  askForDownload(message) {
+  askForDownload() {
     if (this.state.slideIndex === 1) {
-      this.props.socket.emit('replyForDownload', { id: message.id, onDownload: true });
+      this.props.socket.emit('replyForDownload', { id: this.state.id, onDownload: true });
     }
   }
   replyForDownload(message) {
