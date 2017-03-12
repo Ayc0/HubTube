@@ -3,6 +3,7 @@ import { socketConnect } from 'socket.io-react';
 import Send from 'material-ui/svg-icons/content/send';
 
 import VideosList from './videosList';
+import ConfirmReceivedVideo from './confirmReceivedVideo';
 
 class ResultVideosForSend extends Component {
   constructor(props) {
@@ -10,6 +11,9 @@ class ResultVideosForSend extends Component {
 
     this.sendVideo = this.sendVideo.bind(this);
     this.receiveVideo = this.receiveVideo.bind(this);
+
+    this.state = { showPopup: false };
+    this.closePopup = this.closePopup.bind(this);
   }
 
   componentDidMount() {
@@ -18,8 +22,12 @@ class ResultVideosForSend extends Component {
 
   receiveVideo(message) {
     if (message.received) {
-      console.log('ok');
+      this.setState({ showPopup: true });
     }
+  }
+
+  closePopup() {
+    this.setState({ showPopup: false });
   }
 
   sendVideo(video) {
@@ -33,6 +41,7 @@ class ResultVideosForSend extends Component {
           icon={<Send color="white" hoverColor="#d5d5d5"/>}
           send={this.sendVideo}
         />
+        <ConfirmReceivedVideo showPopup={this.state.showPopup} closePopup={this.closePopup} />
       </div>
     );
   }
