@@ -23,8 +23,15 @@ class TabNav extends Component {
     this.props.socket.on('askForDownload', this.askForDownload);
     this.props.socket.on('replyForDownload', this.replyForDownload);
     this.props.socket.on('handleDownloadState', this.handleDownloadState);
-    this.props.socket.emit('askForDownload', { id: this.state.id });
-    this.props.socket.on('connexion', (msg) => { console.log(msg); this.setState({ id: msg.id }); });
+    this.props.socket.on('connexion', (msg) => {
+      console.log(msg);
+      this.setState({ id: msg.id });
+      if (this.state.slideIndex === 0) {
+        this.props.socket.emit('askForDownload', { id: msg.id });
+      } else {
+        this.props.socket.emit('handleDownloadState', { id: msg.id, canChangeTab: false });
+      }
+    });
   }
 
   handleChangeTab(value) {

@@ -40,6 +40,7 @@ io.sockets.on('connection', (socket) => {
 
   socket.on('replyForDownload', (message) => {
     console.log(`${message.id} est sur la tab`);
+    activeDownloadTab = message.id;
     socket.broadcast.emit('replyForDownload', message);
   });
 
