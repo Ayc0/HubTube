@@ -40,14 +40,18 @@ io.sockets.on('connection', (socket) => {
 
   socket.on('replyForDownload', (message) => {
     console.log(`${message.id} est sur la tab`);
-    activeDownloadTab = message.id;
-    socket.broadcast.emit('replyForDownload', message);
+    if (message.onDownload) {
+      activeDownloadTab = message.id;
+    }
+    io.to(message.to).emit('replyForDownload', message);
   });
 
   socket.on('handleDownloadState', (message) => {
     console.log(`${message.id} a ${message.canChangeTab ? 'libéré' : 'pris'} la tab`);
     if (!message.canChangeTab) {
       activeDownloadTab = message.id;
+    } else {
+      activeDownloadTab = -1;
     }
     socket.broadcast.emit('handleDownloadState', message);
   });
@@ -55,6 +59,11 @@ io.sockets.on('connection', (socket) => {
   socket.on('sendVideo', (message) => {
     console.log(`La vidéo ${message.video.id.videoId} a été envoyée`);
     io.to(activeDownloadTab).emit('sendVideo', message);
+  });
+
+  socket.on('receiveVideo', (message) => {
+    console.log('La vidéo a été reçue');
+    io.to(message.id).emit('receiveVideo', message);
   });
 });
 

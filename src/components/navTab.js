@@ -24,7 +24,6 @@ class TabNav extends Component {
     this.props.socket.on('replyForDownload', this.replyForDownload);
     this.props.socket.on('handleDownloadState', this.handleDownloadState);
     this.props.socket.on('connexion', (msg) => {
-      console.log(msg);
       this.setState({ id: msg.id });
       if (this.state.slideIndex === 0) {
         this.props.socket.emit('askForDownload', { id: msg.id });
@@ -37,13 +36,17 @@ class TabNav extends Component {
   handleChangeTab(value) {
     this.setState({ slideIndex: value });
   }
-  askForDownload() {
+  askForDownload(message) {
     if (this.state.slideIndex === 1) {
-      this.props.socket.emit('replyForDownload', { id: this.state.id, onDownload: true });
+      this.props.socket.emit('replyForDownload', {
+        id: this.props.socket.id,
+        onDownload: true,
+        to: message.id,
+      });
     }
   }
   replyForDownload(message) {
-    if (message.onDownload && message.id === this.state.id) {
+    if (message.onDownload && message.id === this.props.socket.id) {
       this.setState({ canChangeTab: false });
     }
   }
@@ -54,13 +57,13 @@ class TabNav extends Component {
     if (this.state.slideIndex !== nextState.slideIndex
         && nextState.slideIndex === 1) {
       if (this.state.canChangeTab) {
-        this.props.socket.emit('handleDownloadState', { id: this.state.id, canChangeTab: false });
+        this.props.socket.emit('handleDownloadState', { id: this.props.socket.id, canChangeTab: false });
       } else {
         nextState.slideIndex = 0;
       }
     }
     if (this.state.slideIndex !== nextState.slideIndex && nextState.slideIndex === 0) {
-      this.props.socket.emit('handleDownloadState', { id: this.state.id, canChangeTab: true });
+      this.props.socket.emit('handleDownloadState', { id: this.props.socket.id, canChangeTab: true });
     }
     return true;
   }

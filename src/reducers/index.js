@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 
 import searchVideosList from './searchVideos';
-import searchVideosSuggestions from './searchVideosSuggestions';
+import searchVideosSuggestionsList from './searchVideosSuggestions';
 
 const rootReducer = combineReducers({
   searchVideosList,
-  searchVideosSuggestions,
+  searchVideosSuggestionsList,
 });
 
 export default rootReducer;

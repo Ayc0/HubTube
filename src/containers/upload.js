@@ -15,7 +15,8 @@ class Upload extends Component {
       <div style={{ margin: '2em' }}>
         <Card style={{ padding: '1rem' }}>
           <SearchBar submit={this.props.searchVideos}
-            onTextChange={console.log /* this.props.searchVideosSuggestions */}
+            onTextChange={this.props.searchVideosSuggestions}
+            dataSource={this.props.searchVideosSuggestionsList}
           />
           <ResultVideosForSend list={this.props.searchVideosList} />
         </Card>
@@ -27,6 +28,7 @@ class Upload extends Component {
 function mapStateToProps(state) {
   return {
     searchVideosList: state.searchVideosList,
+    searchVideosSuggestionsList: state.searchVideosSuggestionsList,
   };
 }
 

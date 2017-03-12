@@ -9,11 +9,21 @@ class ResultVideosForSend extends Component {
     super(props);
 
     this.sendVideo = this.sendVideo.bind(this);
+    this.receiveVideo = this.receiveVideo.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.socket.on('receiveVideo', this.receiveVideo);
+  }
+
+  receiveVideo(message) {
+    if (message.received) {
+      console.log('ok');
+    }
   }
 
   sendVideo(video) {
-    console.log(video);
-    this.props.socket.emit('sendVideo', { video });
+    this.props.socket.emit('sendVideo', { video, id: this.props.socket.id });
   }
   render() {
     return (

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TextField from 'material-ui/TextField';
+import AutoComplete from 'material-ui/AutoComplete';
 import Search from 'material-ui/svg-icons/action/search';
 
 import './searchBar.css';
@@ -65,15 +65,24 @@ export default class SearchBar extends Component {
   }
 
   render() {
+    let dataSource;
+    if (typeof this.props.dataSource === 'undefined') {
+      dataSource = [];
+    } else {
+      dataSource = this.props.dataSource;
+    }
     return (
       <form style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         onSubmit={this.handleSubmit}>
-        <TextField hintText="Search" underlineShow={false} style={inputStyle}
-          onChange={(event, newValue) => {
+        <AutoComplete hintText="Search" underlineShow={false} style={inputStyle}
+          onUpdateInput={(newValue) => {
             this.handleChange(newValue);
             this.onTextChange(newValue);
           }}
-          value={this.state.query} />
+          dataSource={dataSource}
+          value={this.state.query}
+          fullWidth={true}
+        />
         <Search className="validate_search" style={iconStyle}
           onClick={this.handleSubmit} />
       </form>
