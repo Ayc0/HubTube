@@ -4,13 +4,6 @@ import { GridList } from 'material-ui/GridList';
 import VideosListItem from './videosListItem';
 
 export default function (props) {
-  let icon;
-  if (typeof props.icon === 'undefined') {
-    icon = '';
-  } else {
-    icon = props.icon;
-  }
-
   let send;
   if (typeof props.send === 'undefined') {
     send = query => (query);
@@ -18,12 +11,19 @@ export default function (props) {
     send = props.send;
   }
 
+  let addToPlaylist;
+  if (typeof props.addToPlaylist === 'undefined') {
+    addToPlaylist = query => (query);
+  } else {
+    addToPlaylist = props.addToPlaylist;
+  }
+
   const listOfVideos = props.list.map(video =>
     <VideosListItem
       key={video.id.videoId}
       video={video}
-      icon={icon}
       send={send}
+      addToPlaylist={addToPlaylist}
     />,
   );
   return (

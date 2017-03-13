@@ -34,13 +34,13 @@ export default class ConfirmReceivedVideo extends Component {
     ];
     return (
       <Dialog
-        title="Succès"
+        title={this.props.title}
         actions={actions}
         modal={false}
         open={this.state.open}
         onRequestClose={this.handleClose}
       >
-        La vidéo a bien été reçue par un player
+        {this.props.text}
       </Dialog>
     );
   }

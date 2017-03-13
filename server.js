@@ -59,6 +59,16 @@ io.sockets.on('connection', (socket) => {
     console.log(`La vidéo a été reçue dans la room ${message.room}`);
     io.to(message.id).emit('receiveVideo', message);
   });
+
+  socket.on('addVideoToPlaylist', (message) => {
+    console.log(`La vidéo ${message.video.id.videoId} a été ajoutée à la playlist dans la room ${message.room}`);
+    io.to(activeDownloadTab[message.room]).emit('addVideoToPlaylist', message);
+  });
+
+  socket.on('receiveVideoForPlaylist', (message) => {
+    console.log(`La vidéo a été ajoutée à la playlist dans la room ${message.room}`);
+    io.to(message.id).emit('receiveVideoForPlaylist', message);
+  });
 });
 
 /* Start server */

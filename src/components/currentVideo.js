@@ -10,10 +10,12 @@ class CurrentVideo extends Component {
     this.state = { video: {}, videoQueue: [] };
     this.receiveVideo = this.receiveVideo.bind(this);
     this.onEnd = this.onEnd.bind(this);
+    this.addToPlaylist = this.addToPlaylist.bind(this);
   }
 
   componentDidMount() {
     this.props.socket.on('sendVideo', this.receiveVideo);
+    this.props.socket.on('addVideoToPlaylist', this.addToPlaylist);
   }
 
   receiveVideo(message) {
@@ -24,6 +26,15 @@ class CurrentVideo extends Component {
       room: document.location.pathname,
     });
     this.props.updateRelated(message.video.id.videoId);
+  }
+
+  addToPlaylist(message) {
+    this.setState({ videoQueue: [...this.state.videoQueue, message.video] });
+    this.props.socket.emit('receiveVideoForPlaylist', {
+      id: message.id,
+      received: true,
+      room: document.location.pathname,
+    });
   }
 
   onEnd() {
