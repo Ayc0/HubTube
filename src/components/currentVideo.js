@@ -7,8 +7,9 @@ class CurrentVideo extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { video: {} };
+    this.state = { video: {}, videoQueue: [] };
     this.receiveVideo = this.receiveVideo.bind(this);
+    this.onEnd = this.onEnd.bind(this);
   }
 
   componentDidMount() {
@@ -18,6 +19,19 @@ class CurrentVideo extends Component {
   receiveVideo(message) {
     this.setState({ video: message.video });
     this.props.socket.emit('receiveVideo', { id: message.id, received: true });
+    this.props.updateRelated(message.video.id.videoId);
+  }
+
+  onEnd() {
+    let nextVideo = this.state.videoQueue[0];
+    if (typeof nextVideo === 'undefined') {
+      nextVideo = this.props.relatedVideosList[0];
+    } else {
+      this.setState({ videoQueue: this.state.videoQueue.slice(1) });
+    }
+    console.log(nextVideo);
+    this.setState({ video: nextVideo });
+    this.props.updateRelated(nextVideo.id.videoId);
   }
 
   render() {
@@ -30,6 +44,7 @@ class CurrentVideo extends Component {
         title={this.state.video.snippet.title}
         subtitle={this.state.video.snippet.channelTitle}
         avatar={this.state.video.snippet.thumbnails.high.url}
+        onEnd={this.onEnd}
       />
     );
   }

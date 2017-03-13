@@ -35,7 +35,7 @@ class ResultVideosForSend extends Component {
   }
   render() {
     return (
-      <div style={{ padding: '1em' }}>
+      <div style={{ padding: this.props.list.length === 0 ? 0 : '1em' }}>
         <VideosList
           list={this.props.list}
           icon={<Send color="white" hoverColor="#d5d5d5"/>}

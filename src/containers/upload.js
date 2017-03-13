@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
-import { Card } from 'material-ui/Card';
+import Paper from 'material-ui/Paper';
 
 import { searchVideos, searchVideosSuggestions } from '../actions/youtubeAPI';
 
@@ -13,13 +12,13 @@ class Upload extends Component {
   render() {
     return (
       <div style={{ margin: '2em' }}>
-        <Card style={{ padding: '1rem' }}>
+        <Paper style={{ padding: '1rem' }}>
           <SearchBar submit={this.props.searchVideos}
             onTextChange={this.props.searchVideosSuggestions}
             dataSource={this.props.searchVideosSuggestionsList}
           />
           <ResultVideosForSend list={this.props.searchVideosList} />
-        </Card>
+        </Paper>
       </div>
     );
   }

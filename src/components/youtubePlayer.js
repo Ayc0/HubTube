@@ -15,6 +15,7 @@ const YoutubePlayer = props => (
       <YouTube
         videoId={props.videoId}
         opts={opts}
+        onEnd={props.onEnd}
       />
     </CardMedia>
     <CardHeader

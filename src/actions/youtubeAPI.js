@@ -9,7 +9,7 @@ export const SEARCH_VIDEOS_RELATED = 'SEARCH_VIDEOS_RELATED';
 const APIKey = 'AIzaSyCpo1M37RpPuQ04agbQwOF-x7ngJh3EfTM';
 const APIUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&key=${APIKey}&type=video`;
 
-export const searchVideos = (query, maxResults = 12) => {
+export const searchVideos = (query, maxResults = 20) => {
   const fullUrl = `${APIUrl}&q=${query}&maxResults=${maxResults}`;
   return {
     type: SEARCH_VIDEOS,
@@ -17,7 +17,7 @@ export const searchVideos = (query, maxResults = 12) => {
   };
 };
 
-export const searchVideosRelatedToVideoId = (videoId, maxResults = 12) => {
+export const searchVideosRelatedToVideoId = (videoId, maxResults = 20) => {
   const fullUrl = `${APIUrl}&relatedToVideoId=${videoId}&maxResults=${maxResults}`;
   return {
     type: SEARCH_VIDEOS_RELATED,
