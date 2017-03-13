@@ -14,9 +14,11 @@ class TabNav extends Component {
       id: -1,
       canChangeTab: true,
     };
+
     this.askForDownload = this.askForDownload.bind(this);
     this.replyForDownload = this.replyForDownload.bind(this);
     this.handleDownloadState = this.handleDownloadState.bind(this);
+    this.handleChangeTab = this.handleChangeTab.bind(this);
   }
 
   componentDidMount() {
@@ -75,8 +77,8 @@ class TabNav extends Component {
           onChange={this.handleChangeTab}
           value={this.state.slideIndex}
         >
-          <Tab icon={<Upload />} value={0} onClick={() => this.handleChangeTab(0)} />
-          <Tab icon={<Download />} value={1} onClick={() => this.handleChangeTab(1)} />
+          <Tab icon={<Upload />} value={0} />
+          <Tab icon={<Download />} value={1} />
         </Tabs>
         <SwipeableViews
           index={this.state.slideIndex}

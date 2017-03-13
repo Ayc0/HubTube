@@ -41,7 +41,7 @@ export default class SearchBar extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <Toolbar>
-          <ToolbarGroup style={{ width: '98%' }}>
+          <ToolbarGroup style={{ width: 'calc(100% - 48px - 1em)' }}>
             <AutoComplete hintText="Search" underlineShow={false}
               onUpdateInput={(newValue) => {
                 this.handleChange(newValue);
@@ -53,9 +53,8 @@ export default class SearchBar extends Component {
             />
           </ToolbarGroup>
           <ToolbarGroup>
-            <IconButton>
-              <Search className="validate_search"
-                onClick={this.handleSubmit} />
+            <IconButton onTouchTap={this.handleSubmit}>
+              <Search className="validate_search" />
             </IconButton>
           </ToolbarGroup>
         </Toolbar>

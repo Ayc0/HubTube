@@ -29,11 +29,6 @@ io.sockets.on('connection', (socket) => {
   socket.emit('connexion', { id: socket.id, message: 'Vous êtes connectés !' });
 
   // Quand le serveur reçoit un signal de type "message" du client
-  socket.on('sendId', (message) => {
-    console.log(`Bouton appuyé : ${message.id}`);
-    socket.broadcast.emit('updateId', { id: message.id });
-  });
-
   socket.on('askForDownload', (message) => {
     socket.broadcast.emit('askForDownload', message);
   });

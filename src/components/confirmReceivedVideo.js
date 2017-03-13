@@ -29,7 +29,7 @@ export default class ConfirmReceivedVideo extends Component {
         label="Ok"
         primary={true}
         keyboardFocused={true}
-        onClick={this.handleClose}
+        onTouchTap={this.handleClose}
       />,
     ];
     return (
