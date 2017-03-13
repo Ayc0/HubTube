@@ -27,6 +27,12 @@ export const searchVideosRelatedToVideoId = (videoId, maxResults = 12) => {
 
 
 export const searchVideosSuggestions = (query) => {
+  if (query.length === 0) {
+    return {
+      type: SEARCH_VIDEOS_SUGGESTIONS,
+      payload: [],
+    };
+  }
   const fullUrl = `http://suggestqueries.google.com/complete/search?hl=fr&ds=yt&client=youtube&hjson=t&cp=1&q=${query}`;
   return {
     type: SEARCH_VIDEOS_SUGGESTIONS,
