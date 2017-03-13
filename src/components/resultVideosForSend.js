@@ -31,7 +31,11 @@ class ResultVideosForSend extends Component {
   }
 
   sendVideo(video) {
-    this.props.socket.emit('sendVideo', { video, id: this.props.socket.id });
+    this.props.socket.emit('sendVideo', {
+      video,
+      id: this.props.socket.id,
+      room: document.location.pathname,
+    });
   }
   render() {
     return (

@@ -18,7 +18,11 @@ class CurrentVideo extends Component {
 
   receiveVideo(message) {
     this.setState({ video: message.video });
-    this.props.socket.emit('receiveVideo', { id: message.id, received: true });
+    this.props.socket.emit('receiveVideo', {
+      id: message.id,
+      received: true,
+      room: document.location.pathname,
+    });
     this.props.updateRelated(message.video.id.videoId);
   }
 

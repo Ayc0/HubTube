@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 }
 
-let activeDownloadTab = 0;
+let activeDownloadTab = {};
 
 /* Socket.io Communication */
 const io = sockerIo.listen(server);
@@ -30,34 +30,36 @@ io.sockets.on('connection', (socket) => {
 
   // Quand le serveur reçoit un signal de type "message" du client
   socket.on('askForDownload', (message) => {
-    socket.broadcast.emit('askForDownload', message);
+    socket.join(message.room);
+    socket.in(message.room).broadcast.emit('askForDownload', message);
   });
 
   socket.on('replyForDownload', (message) => {
-    console.log(`${message.id} est sur la tab`);
+    console.log(`${message.id} est sur la tab dans la room ${message.room}`);
     if (message.onDownload) {
-      activeDownloadTab = message.id;
+      activeDownloadTab[message.room] = message.id;
     }
     io.to(message.to).emit('replyForDownload', message);
   });
 
   socket.on('handleDownloadState', (message) => {
-    console.log(`${message.id} a ${message.canChangeTab ? 'libéré' : 'pris'} la tab`);
+    console.log(message);
+    console.log(`${message.id} a ${message.canChangeTab ? 'libéré' : 'pris'} la tab dans la room ${message.room}`);
     if (!message.canChangeTab) {
-      activeDownloadTab = message.id;
+      activeDownloadTab[message.room] = message.id;
     } else {
-      activeDownloadTab = -1;
+      activeDownloadTab[message.room] = null;
     }
-    socket.broadcast.emit('handleDownloadState', message);
+    socket.in(message.room).broadcast.emit('handleDownloadState', message);
   });
 
   socket.on('sendVideo', (message) => {
-    console.log(`La vidéo ${message.video.id.videoId} a été envoyée`);
-    io.to(activeDownloadTab).emit('sendVideo', message);
+    console.log(`La vidéo ${message.video.id.videoId} a été envoyée dans la room ${message.room}`);
+    io.to(activeDownloadTab[message.room]).emit('sendVideo', message);
   });
 
   socket.on('receiveVideo', (message) => {
-    console.log('La vidéo a été reçue');
+    console.log(`La vidéo a été reçue dans la room ${message.room}`);
     io.to(message.id).emit('receiveVideo', message);
   });
 });
