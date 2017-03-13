@@ -51,7 +51,7 @@ class TabNav extends Component {
     }
   }
   replyForDownload(message) {
-    if (message.onDownload && message.id === this.props.socket.id) {
+    if (message.onDownload && message.room === this.pathname) {
       this.setState({ canChangeTab: false });
     }
   }
@@ -59,8 +59,7 @@ class TabNav extends Component {
     this.setState({ canChangeTab: message.canChangeTab });
   }
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.slideIndex !== nextState.slideIndex
-        && nextState.slideIndex === 1) {
+    if (this.state.slideIndex !== nextState.slideIndex && nextState.slideIndex === 1) {
       if (this.state.canChangeTab) {
         this.props.socket.emit('handleDownloadState', { id:
           this.props.socket.id,

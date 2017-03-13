@@ -2,8 +2,6 @@ import express from 'express';
 import http from 'http';
 import sockerIo from 'socket.io';
 
-// var socket = require('./routes/socket.js');
-
 const app = express();
 const server = http.createServer(app);
 
@@ -19,7 +17,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 }
 
-let activeDownloadTab = {};
+const activeDownloadTab = {};
 
 /* Socket.io Communication */
 const io = sockerIo.listen(server);
@@ -43,7 +41,6 @@ io.sockets.on('connection', (socket) => {
   });
 
   socket.on('handleDownloadState', (message) => {
-    console.log(message);
     console.log(`${message.id} a ${message.canChangeTab ? 'libéré' : 'pris'} la tab dans la room ${message.room}`);
     if (!message.canChangeTab) {
       activeDownloadTab[message.room] = message.id;
