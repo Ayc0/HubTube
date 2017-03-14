@@ -6,9 +6,10 @@ const app = express();
 const server = http.createServer(app);
 
 /* Configuration */
+
 app.use(express.static(`${__dirname}/build`));
-app.get('*', (req, res) => {
-  res.sendFile('build/index.html');
+app.use((req, res) => {
+  res.sendFile(`${__dirname}/build/index.html`);
 });
 
 app.set('port', 8000);
@@ -69,7 +70,22 @@ io.sockets.on('connection', (socket) => {
     console.log(`La vidéo a été ajoutée à la playlist dans la room ${message.room}`);
     io.to(message.id).emit('receiveVideoForPlaylist', message);
   });
+
+  socket.on('disconnect', () => {
+    Object.keys(activeDownloadTab).forEach((room) => {
+      if (activeDownloadTab[room] === socket.id) {
+        console.log(`${socket.id} s'est déconnecté dans la room ${room}`);
+        activeDownloadTab[room] = null;
+        socket.in(room).broadcast.emit('handleDownloadState', {
+          id: socket.id,
+          canChangeTab: true,
+          room,
+        });
+      }
+    });
+  });
 });
+
 
 /* Start server */
 server.listen(app.get('port'), () => {
