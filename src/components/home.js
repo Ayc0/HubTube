@@ -20,7 +20,6 @@ export default class Home extends Component {
   }
 
   handleChange(room) {
-    console.log(room);
     this.setState({ room });
   }
 

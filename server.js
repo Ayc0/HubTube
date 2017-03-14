@@ -42,25 +42,21 @@ io.sockets.on('connection', (socket) => {
   // Demande aux autres de la room si quelqu'un est sur l'onglet
   socket.on('askForDownload', (message) => {
     socket.join(message.room);
-    socket.in(message.room).broadcast.emit('askForDownload', message);
-  });
-
-  socket.on('replyForDownload', (message) => {
-    console.log(`${message.id} est sur l'onglet dans la room ${message.room}`);
-    if (message.onDownload) {
-      activeDownloadTab[message.room] = message.id;
+    if (typeof activeDownloadTab[message.room] !== 'undefined') {
+      console.log(`${message.id} est sur l'onglet dans la room ${message.room}`);
+      socket.emit('replyForDownload', { canChangeTab: false, room: message.room });
     }
-    io.to(message.to).emit('replyForDownload', message);
   });
 
   socket.on('handleDownloadState', (message) => {
-    console.log(`${message.id} a ${message.canChangeTab ? 'libéré' : 'pris'} l'onglet dans la room ${message.room}`);
     if (message.canChangeTab) {
       if (message.id === activeDownloadTab[message.room]) {
-        activeDownloadTab[message.room] = null;
+        console.log(`${message.id} a libéré l'onglet dans la room ${message.room}`);
+        delete activeDownloadTab[message.room];
         socket.in(message.room).broadcast.emit('handleDownloadState', message);
       }
     } else if (typeof activeDownloadTab[message.room] === 'undefined') {
+      console.log(`${message.id} a pris l'onglet dans la room ${message.room}`);
       activeDownloadTab[message.room] = message.id;
       socket.in(message.room).broadcast.emit('handleDownloadState', message);
     }
@@ -90,7 +86,7 @@ io.sockets.on('connection', (socket) => {
     Object.keys(activeDownloadTab).forEach((room) => {
       if (activeDownloadTab[room] === socket.id) {
         console.log(`${socket.id} s'est déconnecté dans la room ${room}`);
-        activeDownloadTab[room] = null;
+        delete activeDownloadTab[room];
         socket.in(room).broadcast.emit('handleDownloadState', {
           id: socket.id,
           canChangeTab: true,

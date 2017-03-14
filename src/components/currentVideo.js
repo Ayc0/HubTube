@@ -44,7 +44,6 @@ class CurrentVideo extends Component {
     } else {
       this.setState({ videoQueue: this.state.videoQueue.slice(1) });
     }
-    console.log(nextVideo);
     this.setState({ video: nextVideo });
     this.props.updateRelated(nextVideo.id.videoId);
   }
