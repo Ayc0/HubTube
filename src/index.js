@@ -12,6 +12,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import reducers from './reducers';
 
 import App from './components/app';
+import Home from './components/home';
 
 const createStoreWithMiddleware = applyMiddleware(ReduxPromise)(createStore);
 
@@ -30,7 +31,7 @@ ReactDOM.render(
     <SocketProvider socket={socket}>
       <MuiThemeProvider muiTheme={muiTheme}>
         <div style={{ lineHeight: '24px', WebkitFontSmoothing: 'antialiased' }}>
-          <App />
+          { document.location.pathname === '/' ? <Home /> : <App /> }
         </div>
       </MuiThemeProvider>
     </SocketProvider>
