@@ -25,16 +25,28 @@ const io = sockerIo.listen(server);
 io.sockets.on('connection', (socket) => {
   console.log(`${socket.id} s'est connecté.`);
 
+  // Envoie un message de bienvenue et donne l'id aux clients
   socket.emit('connexion', { id: socket.id, message: 'Vous êtes connectés !' });
 
-  // Quand le serveur reçoit un signal de type "message" du client
+  socket.on('initializeOnTab', (message) => {
+    socket.join(message.room);
+    if (typeof activeDownloadTab[message.room] === 'undefined') {
+      console.log(`${message.id} a pris l'onglet dans la room ${message.room}`);
+      activeDownloadTab[message.room] = message.id;
+      socket.in(message.room).broadcast.emit('handleDownloadState', message);
+    } else {
+      socket.emit('forceExitTab', { id: message.id, room: message.room, mustChangeTab: true });
+    }
+  });
+
+  // Demande aux autres de la room si quelqu'un est sur l'onglet
   socket.on('askForDownload', (message) => {
     socket.join(message.room);
     socket.in(message.room).broadcast.emit('askForDownload', message);
   });
 
   socket.on('replyForDownload', (message) => {
-    console.log(`${message.id} est sur la tab dans la room ${message.room}`);
+    console.log(`${message.id} est sur l'onglet dans la room ${message.room}`);
     if (message.onDownload) {
       activeDownloadTab[message.room] = message.id;
     }
@@ -42,13 +54,16 @@ io.sockets.on('connection', (socket) => {
   });
 
   socket.on('handleDownloadState', (message) => {
-    console.log(`${message.id} a ${message.canChangeTab ? 'libéré' : 'pris'} la tab dans la room ${message.room}`);
-    if (!message.canChangeTab) {
+    console.log(`${message.id} a ${message.canChangeTab ? 'libéré' : 'pris'} l'onglet dans la room ${message.room}`);
+    if (message.canChangeTab) {
+      if (message.id === activeDownloadTab[message.room]) {
+        activeDownloadTab[message.room] = null;
+        socket.in(message.room).broadcast.emit('handleDownloadState', message);
+      }
+    } else if (typeof activeDownloadTab[message.room] === 'undefined') {
       activeDownloadTab[message.room] = message.id;
-    } else {
-      activeDownloadTab[message.room] = null;
+      socket.in(message.room).broadcast.emit('handleDownloadState', message);
     }
-    socket.in(message.room).broadcast.emit('handleDownloadState', message);
   });
 
   socket.on('sendVideo', (message) => {

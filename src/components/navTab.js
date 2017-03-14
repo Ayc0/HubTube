@@ -17,13 +17,15 @@ class TabNav extends Component {
 
     this.pathname = document.location.pathname;
 
+    this.forceExitTab = this.forceExitTab.bind(this);
     this.askForDownload = this.askForDownload.bind(this);
+    this.handleChangeTab = this.handleChangeTab.bind(this);
     this.replyForDownload = this.replyForDownload.bind(this);
     this.handleDownloadState = this.handleDownloadState.bind(this);
-    this.handleChangeTab = this.handleChangeTab.bind(this);
   }
 
   componentDidMount() {
+    this.props.socket.on('forceExitTab', this.forceExitTab);
     this.props.socket.on('askForDownload', this.askForDownload);
     this.props.socket.on('replyForDownload', this.replyForDownload);
     this.props.socket.on('handleDownloadState', this.handleDownloadState);
@@ -32,11 +34,16 @@ class TabNav extends Component {
       if (this.state.slideIndex === 0) {
         this.props.socket.emit('askForDownload', { id: msg.id, room: this.pathname });
       } else {
-        this.props.socket.emit('handleDownloadState', { id: msg.id, canChangeTab: false, room: this.pathname });
+        this.props.socket.emit('initializeOnTab', { id: msg.id, canChangeTab: false, room: this.pathname });
       }
     });
   }
 
+  forceExitTab(message) {
+    if (message.mustChangeTab) {
+      this.setState({ slideIndex: 0, canChangeTab: false });
+    }
+  }
   handleChangeTab(value) {
     this.setState({ slideIndex: value });
   }
