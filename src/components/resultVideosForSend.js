@@ -28,12 +28,14 @@ class ResultVideosForSend extends Component {
   receiveVideo(message) {
     if (message.received) {
       this.setState({ showPopupVideo: true });
+      setTimeout(this.closePopupVideo, 1000);
     }
   }
 
   receiveVideoForPlaylist(message) {
     if (message.received) {
       this.setState({ showPopupPlaylist: true });
+      setTimeout(this.closePopupPlaylist, 1000);
     }
   }
 

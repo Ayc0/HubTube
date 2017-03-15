@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
 
 export default class ConfirmReceivedVideo extends Component {
   constructor(props) {
@@ -24,18 +23,9 @@ export default class ConfirmReceivedVideo extends Component {
   }
 
   render() {
-    const actions = [
-      <FlatButton
-        label="Ok"
-        primary={true}
-        keyboardFocused={true}
-        onTouchTap={this.handleClose}
-      />,
-    ];
     return (
       <Dialog
         title={this.props.title}
-        actions={actions}
         modal={false}
         open={this.state.open}
         onRequestClose={this.handleClose}
