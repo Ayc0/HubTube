@@ -106,7 +106,6 @@ class CurrentVideo extends Component {
   }
 
   setTime(message) {
-    console.log(this.state.target);
     this.state.target.seekTo(message.time);
   }
 

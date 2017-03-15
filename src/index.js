@@ -16,7 +16,7 @@ import Home from './components/home';
 
 const createStoreWithMiddleware = applyMiddleware(ReduxPromise)(createStore);
 
-const socket = io.connect('localhost:8000');
+const socket = io.connect('10.10.200.31:8000');
 
 const muiTheme = getMuiTheme({
   palette: {
