@@ -86,6 +86,26 @@ io.sockets.on('connection', (socket) => {
     socket.in(message.room).broadcast.emit('videoData', message);
   });
 
+  socket.on('togglePlayPause', (message) => {
+    io.to(activeDownloadTab[message.room]).emit('togglePlayPause', message);
+  });
+
+  socket.on('sendNext', (message) => {
+    io.to(activeDownloadTab[message.room]).emit('sendNext', message);
+  });
+
+  socket.on('toggleMute', (message) => {
+    io.to(activeDownloadTab[message.room]).emit('toggleMute', message);
+  });
+
+  socket.on('sendVolume', (message) => {
+    io.to(activeDownloadTab[message.room]).emit('sendVolume', message);
+  });
+
+  socket.on('sendTime', (message) => {
+    io.to(activeDownloadTab[message.room]).emit('sendTime', message);
+  });
+
   socket.on('disconnect', () => {
     Object.keys(activeDownloadTab).forEach((room) => {
       if (activeDownloadTab[room] === socket.id) {

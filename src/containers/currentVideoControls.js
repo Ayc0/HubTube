@@ -22,22 +22,51 @@ class CurrentVideoControls extends Component {
       onAir: false,
       volume: 1,
       time: 0,
-      isMuted: false,
+      mute: false,
       duration: 0,
+      play: false,
     };
 
+    this.sendNext = this.sendNext.bind(this);
+    this.toggleMute = this.toggleMute.bind(this);
     this.toggleOnAir = this.toggleOnAir.bind(this);
     this.getVideoData = this.getVideoData.bind(this);
+    this.togglePlayPause = this.togglePlayPause.bind(this);
+    this.handleChangeTime = this.handleChangeTime.bind(this);
+    this.handleChangeVolume = this.handleChangeVolume.bind(this);
   }
 
   componentDidMount() {
     this.props.socket.on('handleDownloadState', this.toggleOnAir);
     this.props.socket.on('videoData', this.getVideoData);
-    // sendPause
-    // sendPlay
-    // sendNext
-    // sendVolume
-    // getData
+    // sendTime : playVideoAt(timeCode)
+  }
+
+  togglePlayPause() {
+    const play = !this.state.play;
+    this.setState({ play });
+    this.props.socket.emit('togglePlayPause', {
+      id: this.props.socket.id,
+      play,
+      room: document.location.pathname,
+    });
+  }
+
+  sendNext() {
+    this.props.socket.emit('sendNext', {
+      id: this.props.socket.id,
+      room: document.location.pathname,
+    });
+  }
+
+  toggleMute() {
+    const mute = !this.state.mute;
+    this.setState({ mute });
+    this.props.socket.emit('toggleMute', {
+      id: this.props.socket.id,
+      mute,
+      room: document.location.pathname,
+    });
   }
 
   getVideoData(message) {
@@ -47,6 +76,7 @@ class CurrentVideoControls extends Component {
         time: message.time,
         volume: message.volume,
         isMuted: message.isMuted,
+        play: message.play,
       });
     }
   }
@@ -57,35 +87,57 @@ class CurrentVideoControls extends Component {
     }
   }
 
+  handleChangeVolume(e, volume) {
+    this.setState({ volume });
+    this.props.socket.emit('sendVolume', {
+      id: this.props.socket.id,
+      volume,
+      room: document.location.pathname,
+    });
+  }
+
+  handleChangeTime(e, time) {
+    this.setState({ time });
+    const realTime = time * this.state.duration;
+    this.props.socket.emit('sendTime', {
+      id: this.props.socket.id,
+      time: realTime,
+      room: document.location.pathname,
+    });
+  }
+
   render() {
     return (
       <div>
         <Toolbar style={{ backgroundColor: this.backgroundColor }}>
           <ToolbarGroup>
-            <IconButton touch={true}>
-              <Play color={this.color} />
+            <IconButton touch={true} onTouchTap={this.togglePlayPause}>
+             { this.state.play ? <Pause color={this.color} /> : <Play color={this.color} /> }
             </IconButton>
-            <IconButton touch={true}>
-              <Pause color={this.color} />
-            </IconButton>
-            <IconButton touch={true}>
+            <IconButton touch={true} onTouchTap={this.sendNext}>
               <Next color={this.color} />
             </IconButton>
             <div style= {{ display: 'flex', flexDirection: 'row', alignItems: 'center', height: 48, marginRight: '0.75em' }}>
-              <IconButton touch={true}>
-                {this.state.isMuted ? <Mute color={this.color} /> : <Volume color={this.color} />}
+              <IconButton touch={true} onTouchTap={this.toggleMute}>
+                {this.state.mute ? <Mute color={this.color} /> : <Volume color={this.color} />}
               </IconButton>
-              <Slider value={this.state.volume} style={{
-                width: 64,
-                height: 64,
-              }} />
+              <Slider
+                value={this.state.volume}
+                style={{ width: 64, height: 64 }}
+                onChange={this.handleChangeVolume}
+              />
             </div>
           </ToolbarGroup>
           <ToolbarGroup>
             { this.state.onAir ? <Done color={this.color} /> : <Clear color={this.color} /> }
           </ToolbarGroup>
         </Toolbar>
-        <Slider style={{ marginTop: -34 }} value={this.state.time} />
+        <Slider
+          style={{ marginTop: -34 }}
+          value={this.state.time}
+          step={0.001}
+          onChange={this.handleChangeTime}
+        />
       </div>
     );
   }

@@ -13,17 +13,20 @@ class CurrentVideo extends Component {
     this.onReady = this.onReady.bind(this);
     this.addToPlaylist = this.addToPlaylist.bind(this);
     this.getData = this.getData.bind(this);
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    if (this.state.video !== nextState.video) {
-      this.forceUpdate();
-    }
+    this.togglePlayPause = this.togglePlayPause.bind(this);
+    this.toggleMute = this.toggleMute.bind(this);
+    this.setVolume = this.setVolume.bind(this);
+    this.setTime = this.setTime.bind(this);
   }
 
   componentDidMount() {
     this.props.socket.on('sendVideo', this.receiveVideo);
     this.props.socket.on('addVideoToPlaylist', this.addToPlaylist);
+    this.props.socket.on('togglePlayPause', this.togglePlayPause);
+    this.props.socket.on('sendNext', this.onEnd);
+    this.props.socket.on('toggleMute', this.toggleMute);
+    this.props.socket.on('sendVolume', this.setVolume);
+    this.props.socket.on('sendTime', this.setTime);
   }
 
   receiveVideo(message) {
@@ -70,14 +73,41 @@ class CurrentVideo extends Component {
     const time = this.state.target.getCurrentTime() / duration;
     const volume = this.state.target.getVolume() / 100;
     const isMuted = this.state.target.isMuted();
+    const play = this.state.target.getPlayerState() === 1;
     this.props.socket.emit('videoData', {
       id: this.props.socket.id,
       duration,
       time,
       volume,
       isMuted,
+      play,
       room: document.location.pathname,
     });
+  }
+
+  togglePlayPause(message) {
+    if (message.play) {
+      this.state.target.playVideo();
+    } else {
+      this.state.target.pauseVideo();
+    }
+  }
+
+  toggleMute(message) {
+    if (message.mute) {
+      this.state.target.mute();
+    } else {
+      this.state.target.unMute();
+    }
+  }
+
+  setVolume(message) {
+    this.state.target.setVolume(message.volume * 100);
+  }
+
+  setTime(message) {
+    console.log(this.state.target);
+    this.state.target.seekTo(message.time);
   }
 
   render() {
