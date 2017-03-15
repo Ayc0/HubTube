@@ -1,6 +1,6 @@
 import React from 'react';
 
-import NavTab from './navTab';
+import NavTab from '../containers/navTab';
 import Upload from '../containers/upload';
 import Download from '../containers/download';
 

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { socketConnect } from 'socket.io-react';
 
-import VideosList from './videosList';
-import Popup from './popup';
+import VideosList from '../components/videosList';
+import Popup from '../components/popup';
 
 class ResultVideosForSend extends Component {
   constructor(props) {

@@ -6,7 +6,7 @@ import Paper from 'material-ui/Paper';
 import { searchVideos, searchVideosSuggestions } from '../actions/youtubeAPI';
 
 import SearchBar from '../components/searchBar';
-import ResultVideosForSend from '../components/resultVideosForSend';
+import ResultVideosForSend from './resultVideosForSend';
 
 class Upload extends Component {
   render() {

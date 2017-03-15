@@ -6,7 +6,7 @@ import Paper from 'material-ui/Paper';
 import { searchVideos, searchVideosSuggestions, searchVideosRelatedToVideoId } from '../actions/youtubeAPI';
 
 import SearchBar from '../components/searchBar';
-import CurrentVideo from '../components/currentVideo';
+import CurrentVideo from './currentVideo';
 
 class Download extends Component {
   render() {

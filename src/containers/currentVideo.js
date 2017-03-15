@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { socketConnect } from 'socket.io-react';
 
-import YoutubePlayer from './youtubePlayer';
+import YoutubePlayer from '../components/youtubePlayer';
 
 class CurrentVideo extends Component {
   constructor(props) {
