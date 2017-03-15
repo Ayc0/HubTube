@@ -82,6 +82,10 @@ io.sockets.on('connection', (socket) => {
     io.to(message.id).emit('receiveVideoForPlaylist', message);
   });
 
+  socket.on('videoData', (message) => {
+    socket.in(message.room).broadcast.emit('videoData', message);
+  });
+
   socket.on('disconnect', () => {
     Object.keys(activeDownloadTab).forEach((room) => {
       if (activeDownloadTab[room] === socket.id) {

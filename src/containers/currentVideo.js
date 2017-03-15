@@ -7,10 +7,18 @@ class CurrentVideo extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { video: {}, videoQueue: [] };
+    this.state = { video: {}, videoQueue: [], target: {}, targetId: 0 };
     this.receiveVideo = this.receiveVideo.bind(this);
     this.onEnd = this.onEnd.bind(this);
+    this.onReady = this.onReady.bind(this);
     this.addToPlaylist = this.addToPlaylist.bind(this);
+    this.getData = this.getData.bind(this);
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (this.state.video !== nextState.video) {
+      this.forceUpdate();
+    }
   }
 
   componentDidMount() {
@@ -48,6 +56,30 @@ class CurrentVideo extends Component {
     this.props.updateRelated(nextVideo.id.videoId);
   }
 
+  onReady(event) {
+    const target = event.target;
+    if (this.state.video.id.videoId !== this.state.targetId) {
+      this.setState({ target, targetId: this.state.video.id.videoId });
+      clearInterval(this.interval);
+      this.interval = setInterval(this.getData, 2000);
+    }
+  }
+
+  getData() {
+    const duration = this.state.target.getDuration();
+    const time = this.state.target.getCurrentTime() / duration;
+    const volume = this.state.target.getVolume() / 100;
+    const isMuted = this.state.target.isMuted();
+    this.props.socket.emit('videoData', {
+      id: this.props.socket.id,
+      duration,
+      time,
+      volume,
+      isMuted,
+      room: document.location.pathname,
+    });
+  }
+
   render() {
     if (typeof this.state.video.etag === 'undefined') {
       return <div />;
@@ -59,6 +91,7 @@ class CurrentVideo extends Component {
         subtitle={this.state.video.snippet.channelTitle}
         avatar={this.state.video.snippet.thumbnails.high.url}
         onEnd={this.onEnd}
+        onReady={this.onReady}
       />
     );
   }

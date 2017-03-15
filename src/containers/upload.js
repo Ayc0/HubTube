@@ -7,6 +7,7 @@ import { searchVideos, searchVideosSuggestions } from '../actions/youtubeAPI';
 
 import SearchBar from '../components/searchBar';
 import ResultVideosForSend from './resultVideosForSend';
+import CurrentVideoControls from './currentVideoControls';
 
 class Upload extends Component {
   render() {
@@ -17,6 +18,8 @@ class Upload extends Component {
             onTextChange={this.props.searchVideosSuggestions}
             dataSource={this.props.searchVideosSuggestionsList}
           />
+          <br />
+          <CurrentVideoControls />
           <ResultVideosForSend list={this.props.searchVideosList} />
         </Paper>
       </div>
