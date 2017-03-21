@@ -6,7 +6,7 @@ import Pause from 'material-ui/svg-icons/av/pause';
 import Next from 'material-ui/svg-icons/av/skip-next';
 import Volume from 'material-ui/svg-icons/av/volume-up';
 import Mute from 'material-ui/svg-icons/av/volume-off';
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
+import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
 import { socketConnect } from 'socket.io-react';
 import { styled } from 'styletron-react';
 
@@ -32,6 +32,7 @@ class CurrentVideoControls extends Component {
       mute: false,
       duration: 0,
       play: false,
+      title: '',
     };
 
     this.sendNext = this.sendNext.bind(this);
@@ -82,6 +83,7 @@ class CurrentVideoControls extends Component {
         volume: message.volume,
         isMuted: message.isMuted,
         play: message.play,
+        title: message.title,
       });
     }
   }
@@ -126,6 +128,10 @@ class CurrentVideoControls extends Component {
                 onChange={this.handleChangeVolume}
               />
             </VolumeBar>
+            <ToolbarTitle text={this.state.title} style={{
+              color: this.color,
+              marginLeft: '1em',
+            }}/>
           </ToolbarGroup>
         </Toolbar>
         <Slider

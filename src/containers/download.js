@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
+import { styled } from 'styletron-react';
 
 import { searchVideos, searchVideosSuggestions, searchVideosRelatedToVideoId } from '../actions/youtubeAPI';
 
@@ -9,27 +10,32 @@ import SearchBar from '../components/searchBar';
 import CurrentVideo from './currentVideo';
 import ListRelatedVideos from '../components/listRelatedVideos';
 
+const Container = styled(Paper, () => ({
+  '@media (min-width: 480px)': {
+    margin: '2em',
+  },
+  padding: '1rem',
+}));
+
 class Download extends Component {
   render() {
     return (
-      <div style={{ margin: '2em' }}>
-        <Paper style={{ padding: '1rem' }}>
-          <SearchBar submit={this.props.searchVideos}
-            onTextChange={this.props.searchVideosSuggestions}
-            dataSource={this.props.searchVideosSuggestionsList}
+      <Container>
+        <SearchBar submit={this.props.searchVideos}
+          onTextChange={this.props.searchVideosSuggestions}
+          dataSource={this.props.searchVideosSuggestionsList}
+        />
+        <div style={{ display: 'flex', alignItems: 'stretch' }}>
+          <CurrentVideo
+            updateRelated={this.props.searchVideosRelatedToVideoId}
+            relatedVideosList={this.props.searchVideosRelatedList}
+            style={{ maxWidth: '640px', width: '100%', flexWrap: 'wrap' }}
           />
-          <div style={{ display: 'flex', alignItems: 'stretch' }}>
-            <CurrentVideo
-              updateRelated={this.props.searchVideosRelatedToVideoId}
-              relatedVideosList={this.props.searchVideosRelatedList}
-              style={{ maxWidth: '640px', width: '100%', flexWrap: 'wrap' }}
-            />
-            { this.props.searchVideosRelatedList.length !== 0 ?
-              <ListRelatedVideos /> : ''
-            }
-          </div>
-        </Paper>
-      </div>
+          { this.props.searchVideosRelatedList.length !== 0 ?
+            <ListRelatedVideos /> : ''
+          }
+        </div>
+      </Container>
     );
   }
 }

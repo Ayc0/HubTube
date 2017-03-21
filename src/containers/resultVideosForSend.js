@@ -65,7 +65,10 @@ class ResultVideosForSend extends Component {
 
   render() {
     return (
-      <div style={{ padding: this.props.list.length === 0 ? 0 : '1em' }}>
+      <div style={{
+          padding: this.props.list.length === 0 ? 0 : '1em',
+          marginTop: '-3em',
+        }}>
         <VideosList
           list={this.props.list}
           send={this.sendVideo}

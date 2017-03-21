@@ -81,6 +81,7 @@ class CurrentVideo extends Component {
       volume,
       isMuted,
       play,
+      title: this.state.video.snippet.title,
       room: document.location.pathname,
     });
   }
