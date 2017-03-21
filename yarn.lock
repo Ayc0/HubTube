@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@types/react@*":
+  version "15.0.16"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-15.0.16.tgz#78e39511a9cfcabf7f74ecd55180522f4290a0c1"
+
 abab@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/abab/-/abab-1.0.3.tgz#b81de5f7274ec4e756d797cd834f303642724e5d"
@@ -5547,6 +5551,37 @@ style-loader@0.13.1:
   resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-0.13.1.tgz#468280efbc0473023cd3a6cd56e33b5a1d7fc3a9"
   dependencies:
     loader-utils "^0.2.7"
+
+styletron-client@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/styletron-client/-/styletron-client-2.5.1.tgz#df0b6fd65965b035d2ff58df61b422aa80e23577"
+  dependencies:
+    styletron-core "^2.5.1"
+
+styletron-core@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/styletron-core/-/styletron-core-2.5.1.tgz#bf9e8aebc41461b81fdd22b1062f6e25862286fd"
+
+styletron-react@^2.5.3:
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/styletron-react/-/styletron-react-2.5.3.tgz#381a170f65a1519fb474e8b0ab098d2b03201e59"
+  dependencies:
+    "@types/react" "*"
+    styletron-client "^2.5.1"
+    styletron-server "^2.5.1"
+    styletron-utils "^2.5.1"
+
+styletron-server@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/styletron-server/-/styletron-server-2.5.1.tgz#61b65ebc3b395435fb0ce550f5dcc25c99fd07b1"
+  dependencies:
+    styletron-core "^2.5.1"
+
+styletron-utils@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/styletron-utils/-/styletron-utils-2.5.1.tgz#c8207f0c9a7959ad6070d5f88176883be976471b"
+  dependencies:
+    inline-style-prefixer "^2.0.1"
 
 supports-color@^2.0.0:
   version "2.0.0"

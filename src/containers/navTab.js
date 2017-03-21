@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import SwipeableViews from 'react-swipeable-views';
-import Download from 'material-ui/svg-icons/file/file-download';
 import Upload from 'material-ui/svg-icons/file/file-upload';
+import Download from 'material-ui/svg-icons/file/file-download';
+import Block from 'material-ui/svg-icons/content/block';
 import { socketConnect } from 'socket.io-react';
 
 class TabNav extends Component {
@@ -83,7 +84,14 @@ class TabNav extends Component {
           value={this.state.slideIndex}
         >
           <Tab icon={<Upload />} value={0} />
-          <Tab icon={<Download />} value={1} />
+          { this.state.canChangeTab ?
+            <Tab icon={<Download />} value={1} /> :
+            <Tab icon={this.state.canChangeTab ? <Download /> : <Block />}
+              value={1} style={{
+                backgroundColor: '#6b6b6b',
+                cursor: 'not-allowed',
+              }} />
+          }
         </Tabs>
         <SwipeableViews
           index={this.state.slideIndex}

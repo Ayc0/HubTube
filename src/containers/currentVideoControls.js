@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import IconButton from 'material-ui/IconButton';
 import Slider from 'material-ui/Slider';
-import Clear from 'material-ui/svg-icons/content/clear';
-import Done from 'material-ui/svg-icons/action/done';
 import Play from 'material-ui/svg-icons/av/play-arrow';
 import Pause from 'material-ui/svg-icons/av/pause';
 import Next from 'material-ui/svg-icons/av/skip-next';
@@ -10,6 +8,15 @@ import Volume from 'material-ui/svg-icons/av/volume-up';
 import Mute from 'material-ui/svg-icons/av/volume-off';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import { socketConnect } from 'socket.io-react';
+import { styled } from 'styletron-react';
+
+const VolumeBar = styled('div', () => ({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  height: 48,
+  marginRight: '0.75em',
+}));
 
 class CurrentVideoControls extends Component {
   constructor(props) {
@@ -29,7 +36,6 @@ class CurrentVideoControls extends Component {
 
     this.sendNext = this.sendNext.bind(this);
     this.toggleMute = this.toggleMute.bind(this);
-    this.toggleOnAir = this.toggleOnAir.bind(this);
     this.getVideoData = this.getVideoData.bind(this);
     this.togglePlayPause = this.togglePlayPause.bind(this);
     this.handleChangeTime = this.handleChangeTime.bind(this);
@@ -37,7 +43,6 @@ class CurrentVideoControls extends Component {
   }
 
   componentDidMount() {
-    this.props.socket.on('handleDownloadState', this.toggleOnAir);
     this.props.socket.on('videoData', this.getVideoData);
     // sendTime : playVideoAt(timeCode)
   }
@@ -81,12 +86,6 @@ class CurrentVideoControls extends Component {
     }
   }
 
-  toggleOnAir(message) {
-    if (message.room === document.location.pathname) {
-      this.setState({ onAir: !message.canChangeTab });
-    }
-  }
-
   handleChangeVolume(e, volume) {
     this.setState({ volume });
     this.props.socket.emit('sendVolume', {
@@ -117,7 +116,7 @@ class CurrentVideoControls extends Component {
             <IconButton touch={true} onTouchTap={this.sendNext}>
               <Next color={this.color} />
             </IconButton>
-            <div style= {{ display: 'flex', flexDirection: 'row', alignItems: 'center', height: 48, marginRight: '0.75em' }}>
+            <VolumeBar>
               <IconButton touch={true} onTouchTap={this.toggleMute}>
                 {this.state.mute ? <Mute color={this.color} /> : <Volume color={this.color} />}
               </IconButton>
@@ -126,10 +125,7 @@ class CurrentVideoControls extends Component {
                 style={{ width: 64, height: 64 }}
                 onChange={this.handleChangeVolume}
               />
-            </div>
-          </ToolbarGroup>
-          <ToolbarGroup>
-            { this.state.onAir ? <Done color={this.color} /> : <Clear color={this.color} /> }
+            </VolumeBar>
           </ToolbarGroup>
         </Toolbar>
         <Slider

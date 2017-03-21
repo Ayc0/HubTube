@@ -10,7 +10,7 @@ const opts = {
 };
 
 const YoutubePlayer = props => (
-  <Card style={{ maxWidth: '640px' }}>
+  <Card style={{ width: '100%', maxWidth: '640px' }}>
     <CardMedia>
       <YouTube
         videoId={props.videoId}

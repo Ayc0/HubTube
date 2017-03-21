@@ -17,7 +17,9 @@
     "redux-promise": "^0.5.3",
     "socket.io": "^1.7.3",
     "socket.io-client": "^1.7.3",
-    "socket.io-react": "^1.1.2"
+    "socket.io-react": "^1.1.2",
+    "styletron-client": "^2.5.1",
+    "styletron-react": "^2.5.3"
   },
   "devDependencies": {
     "babel-cli": "^6.23.0",

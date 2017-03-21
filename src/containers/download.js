@@ -7,6 +7,7 @@ import { searchVideos, searchVideosSuggestions, searchVideosRelatedToVideoId } f
 
 import SearchBar from '../components/searchBar';
 import CurrentVideo from './currentVideo';
+import ListRelatedVideos from '../components/listRelatedVideos';
 
 class Download extends Component {
   render() {
@@ -17,10 +18,16 @@ class Download extends Component {
             onTextChange={this.props.searchVideosSuggestions}
             dataSource={this.props.searchVideosSuggestionsList}
           />
-          <CurrentVideo
-            updateRelated={this.props.searchVideosRelatedToVideoId}
-            relatedVideosList={this.props.searchVideosRelatedList}
-          />
+          <div style={{ display: 'flex', alignItems: 'stretch' }}>
+            <CurrentVideo
+              updateRelated={this.props.searchVideosRelatedToVideoId}
+              relatedVideosList={this.props.searchVideosRelatedList}
+              style={{ maxWidth: '640px', width: '100%', flexWrap: 'wrap' }}
+            />
+            { this.props.searchVideosRelatedList.length !== 0 ?
+              <ListRelatedVideos /> : ''
+            }
+          </div>
         </Paper>
       </div>
     );
