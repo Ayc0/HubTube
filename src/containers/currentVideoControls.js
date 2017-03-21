@@ -111,7 +111,7 @@ class CurrentVideoControls extends Component {
     return (
       <div>
         <Toolbar style={{ backgroundColor: this.backgroundColor }}>
-          <ToolbarGroup>
+          <ToolbarGroup style={{ width: '100%' }}>
             <IconButton touch={true} onTouchTap={this.togglePlayPause}>
              { this.state.play ? <Pause color={this.color} /> : <Play color={this.color} /> }
             </IconButton>
@@ -131,6 +131,9 @@ class CurrentVideoControls extends Component {
             <ToolbarTitle text={this.state.title} style={{
               color: this.color,
               marginLeft: '1em',
+              overflowX: 'hidden',
+              flexGrow: 1,
+              width: 'calc(100% - 208px)',
             }}/>
           </ToolbarGroup>
         </Toolbar>

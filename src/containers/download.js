@@ -9,12 +9,23 @@ import { searchVideos, searchVideosSuggestions, searchVideosRelatedToVideoId } f
 import SearchBar from '../components/searchBar';
 import CurrentVideo from './currentVideo';
 import ListRelatedVideos from '../components/listRelatedVideos';
+import ResultVideosForSend from './resultVideosForSend';
 
 const Container = styled(Paper, () => ({
   '@media (min-width: 480px)': {
     margin: '2em',
   },
   padding: '1rem',
+}));
+
+const CurrentVideoStyled = styled(CurrentVideo, () => ({
+  '@media (min-width: 480px)': {
+    maxWidth: '640px',
+    width: '70%',
+  },
+  '@media (max-width: 480px)': {
+    width: '100%',
+  },
 }));
 
 class Download extends Component {
@@ -25,16 +36,17 @@ class Download extends Component {
           onTextChange={this.props.searchVideosSuggestions}
           dataSource={this.props.searchVideosSuggestionsList}
         />
-        <div style={{ display: 'flex', alignItems: 'stretch' }}>
-          <CurrentVideo
+        <div style={{ display: 'flex', alignItems: 'stretch', marginTop: '1em', flexDirection: window.matchMedia('(min-width: 480px)').matches ? 'row' : 'column' }}>
+          <CurrentVideoStyled
             updateRelated={this.props.searchVideosRelatedToVideoId}
             relatedVideosList={this.props.searchVideosRelatedList}
-            style={{ maxWidth: '640px', width: '100%', flexWrap: 'wrap' }}
           />
           { this.props.searchVideosRelatedList.length !== 0 ?
-            <ListRelatedVideos /> : ''
+            <ListRelatedVideos list={this.props.searchVideosRelatedList}/> : ''
           }
         </div>
+        <div style={{ height: '3em' }} />
+        <ResultVideosForSend list={this.props.searchVideosList} />
       </Container>
     );
   }
