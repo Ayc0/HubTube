@@ -28,12 +28,19 @@ class TabNav extends Component {
     this.props.socket.on('forceExitTab', this.forceExitTab);
     this.props.socket.on('replyForDownload', this.replyForDownload);
     this.props.socket.on('handleDownloadState', this.handleDownloadState);
-    this.props.socket.on('connexion', (msg) => {
+    this.props.socket.on('connexion', msg => {
       this.setState({ id: msg.id });
       if (this.state.slideIndex === 0) {
-        this.props.socket.emit('askForDownload', { id: msg.id, room: this.pathname });
+        this.props.socket.emit('askForDownload', {
+          id: msg.id,
+          room: this.pathname,
+        });
       } else {
-        this.props.socket.emit('initializeOnTab', { id: msg.id, canChangeTab: false, room: this.pathname });
+        this.props.socket.emit('initializeOnTab', {
+          id: msg.id,
+          canChangeTab: false,
+          room: this.pathname,
+        });
       }
     });
   }
@@ -55,7 +62,10 @@ class TabNav extends Component {
     this.setState({ canChangeTab: message.canChangeTab });
   }
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.slideIndex !== nextState.slideIndex && nextState.slideIndex === 1) {
+    if (
+      this.state.slideIndex !== nextState.slideIndex &&
+      nextState.slideIndex === 1
+    ) {
       if (this.state.canChangeTab) {
         this.props.socket.emit('handleDownloadState', {
           id: this.props.socket.id,
@@ -66,7 +76,10 @@ class TabNav extends Component {
         nextState.slideIndex = 0;
       }
     }
-    if (this.state.slideIndex !== nextState.slideIndex && nextState.slideIndex === 0) {
+    if (
+      this.state.slideIndex !== nextState.slideIndex &&
+      nextState.slideIndex === 0
+    ) {
       this.props.socket.emit('handleDownloadState', {
         id: this.props.socket.id,
         canChangeTab: true,
@@ -79,19 +92,18 @@ class TabNav extends Component {
   render() {
     return (
       <div>
-        <Tabs
-          onChange={this.handleChangeTab}
-          value={this.state.slideIndex}
-        >
+        <Tabs onChange={this.handleChangeTab} value={this.state.slideIndex}>
           <Tab icon={<Upload />} value={0} />
-          { this.state.canChangeTab ?
-            <Tab icon={<Download />} value={1} /> :
-            <Tab icon={this.state.canChangeTab ? <Download /> : <Block />}
-              value={1} style={{
-                backgroundColor: '#6b6b6b',
-                cursor: 'not-allowed',
-              }} />
-          }
+          {this.state.canChangeTab
+            ? <Tab icon={<Download />} value={1} />
+            : <Tab
+                icon={this.state.canChangeTab ? <Download /> : <Block />}
+                value={1}
+                style={{
+                  backgroundColor: '#6b6b6b',
+                  cursor: 'not-allowed',
+                }}
+              />}
         </Tabs>
         <SwipeableViews
           index={this.state.slideIndex}

@@ -1,6 +1,6 @@
 import fetchJsonp from 'fetch-jsonp';
 
-const get = url => (fetchJsonp(url).then(res => (res.json())));
+const get = url => fetchJsonp(url).then(res => res.json());
 
 export const SEARCH_VIDEOS = 'SEARCH_VIDEOS';
 export const SEARCH_VIDEOS_SUGGESTIONS = 'SEARCH_VIDEOS_SUGGESTIONS';
@@ -25,8 +25,7 @@ export const searchVideosRelatedToVideoId = (videoId, maxResults = 20) => {
   };
 };
 
-
-export const searchVideosSuggestions = (query) => {
+export const searchVideosSuggestions = query => {
   if (query.length === 0) {
     return {
       type: SEARCH_VIDEOS_SUGGESTIONS,

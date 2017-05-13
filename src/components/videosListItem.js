@@ -6,17 +6,17 @@ import PlaylistAdd from 'material-ui/svg-icons/av/playlist-add';
 
 import './videosListItem.css';
 
-export default (props) => {
+export default props => {
   let send;
   if (typeof props.send === 'undefined') {
-    send = query => (query);
+    send = query => query;
   } else {
     send = props.send;
   }
 
   let addToPlaylist;
   if (typeof props.addToPlaylist === 'undefined') {
-    addToPlaylist = query => (query);
+    addToPlaylist = query => query;
   } else {
     addToPlaylist = props.addToPlaylist;
   }
@@ -26,17 +26,18 @@ export default (props) => {
       title={<b>{props.video.snippet.title}</b>}
       subtitle={props.video.snippet.channelTitle}
       actionIcon={
-        <div style={{ display: 'flex' }} >
+        <div style={{ display: 'flex' }}>
           <IconButton onTouchTap={() => addToPlaylist(props.video)}>
-            <PlaylistAdd color="white" hoverColor="#d5d5d5"/>
+            <PlaylistAdd color="white" hoverColor="#d5d5d5" />
           </IconButton>
           <IconButton onTouchTap={() => send(props.video)}>
-            <Send color="white" hoverColor="#d5d5d5"/>
+            <Send color="white" hoverColor="#d5d5d5" />
           </IconButton>
         </div>
       }
     >
-      <img src={props.video.snippet.thumbnails.high.url}
+      <img
+        src={props.video.snippet.thumbnails.high.url}
         onTouchTap={() => send(props.video)}
         className="thumbnails"
         alt={props.video.snippet.title}

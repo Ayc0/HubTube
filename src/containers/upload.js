@@ -21,7 +21,8 @@ class Upload extends Component {
   render() {
     return (
       <Container>
-        <SearchBar submit={this.props.searchVideos}
+        <SearchBar
+          submit={this.props.searchVideos}
           onTextChange={this.props.searchVideosSuggestions}
           dataSource={this.props.searchVideosSuggestionsList}
         />
@@ -40,9 +41,11 @@ function mapStateToProps(state) {
   };
 }
 
-
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ searchVideos, searchVideosSuggestions }, dispatch);
+  return bindActionCreators(
+    { searchVideos, searchVideosSuggestions },
+    dispatch
+  );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Upload);

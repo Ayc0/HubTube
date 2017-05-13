@@ -22,36 +22,48 @@ const activeDownloadTab = {};
 
 /* Socket.io Communication */
 const io = sockerIo.listen(server);
-io.sockets.on('connection', (socket) => {
+io.sockets.on('connection', socket => {
+  console.log(socket);
   console.log(`${socket.id} s'est connecté.`);
 
   // Envoie un message de bienvenue et donne l'id aux clients
   socket.emit('connexion', { id: socket.id, message: 'Vous êtes connectés !' });
 
-  socket.on('initializeOnTab', (message) => {
+  socket.on('initializeOnTab', message => {
     socket.join(message.room);
     if (typeof activeDownloadTab[message.room] === 'undefined') {
       console.log(`${message.id} a pris l'onglet dans la room ${message.room}`);
       activeDownloadTab[message.room] = message.id;
       socket.in(message.room).broadcast.emit('handleDownloadState', message);
     } else {
-      socket.emit('forceExitTab', { id: message.id, room: message.room, mustChangeTab: true });
+      socket.emit('forceExitTab', {
+        id: message.id,
+        room: message.room,
+        mustChangeTab: true,
+      });
     }
   });
 
   // Demande aux autres de la room si quelqu'un est sur l'onglet
-  socket.on('askForDownload', (message) => {
+  socket.on('askForDownload', message => {
     socket.join(message.room);
     if (typeof activeDownloadTab[message.room] !== 'undefined') {
-      console.log(`${message.id} est sur l'onglet dans la room ${message.room}`);
-      socket.emit('replyForDownload', { canChangeTab: false, room: message.room });
+      console.log(
+        `${message.id} est sur l'onglet dans la room ${message.room}`
+      );
+      socket.emit('replyForDownload', {
+        canChangeTab: false,
+        room: message.room,
+      });
     }
   });
 
-  socket.on('handleDownloadState', (message) => {
+  socket.on('handleDownloadState', message => {
     if (message.canChangeTab) {
       if (message.id === activeDownloadTab[message.room]) {
-        console.log(`${message.id} a libéré l'onglet dans la room ${message.room}`);
+        console.log(
+          `${message.id} a libéré l'onglet dans la room ${message.room}`
+        );
         delete activeDownloadTab[message.room];
         socket.in(message.room).broadcast.emit('handleDownloadState', message);
       }
@@ -62,52 +74,59 @@ io.sockets.on('connection', (socket) => {
     }
   });
 
-  socket.on('sendVideo', (message) => {
-    console.log(`La vidéo ${message.video.id.videoId} a été envoyée dans la room ${message.room}`);
+  socket.on('sendVideo', message => {
+    console.log(
+      `La vidéo ${message.video.id.videoId} a été envoyée dans la room ${message.room}`
+    );
     io.to(activeDownloadTab[message.room]).emit('sendVideo', message);
   });
 
-  socket.on('receiveVideo', (message) => {
+  socket.on('receiveVideo', message => {
     console.log(`La vidéo a été reçue dans la room ${message.room}`);
     io.to(message.id).emit('receiveVideo', message);
   });
 
-  socket.on('addVideoToPlaylist', (message) => {
-    console.log(`La vidéo ${message.video.id.videoId} a été ajoutée à la playlist dans la room ${message.room}`);
+  socket.on('addVideoToPlaylist', message => {
+    console.log(
+      `La vidéo ${message.video.id.videoId} a été ajoutée à la playlist dans la room ${message.room}`
+    );
     io.to(activeDownloadTab[message.room]).emit('addVideoToPlaylist', message);
   });
 
-  socket.on('receiveVideoForPlaylist', (message) => {
-    console.log(`La vidéo a été ajoutée à la playlist dans la room ${message.room}`);
+  socket.on('receiveVideoForPlaylist', message => {
+    console.log(
+      `La vidéo a été ajoutée à la playlist dans la room ${message.room}`
+    );
     io.to(message.id).emit('receiveVideoForPlaylist', message);
   });
 
-  socket.on('videoData', (message) => {
+  socket.on('videoData', message => {
     socket.in(message.room).broadcast.emit('videoData', message);
   });
 
-  socket.on('togglePlayPause', (message) => {
+  socket.on('togglePlayPause', message => {
     io.to(activeDownloadTab[message.room]).emit('togglePlayPause', message);
   });
 
-  socket.on('sendNext', (message) => {
+  socket.on('sendNext', message => {
     io.to(activeDownloadTab[message.room]).emit('sendNext', message);
   });
 
-  socket.on('toggleMute', (message) => {
+  socket.on('toggleMute', message => {
     io.to(activeDownloadTab[message.room]).emit('toggleMute', message);
   });
 
-  socket.on('sendVolume', (message) => {
+  socket.on('sendVolume', message => {
     io.to(activeDownloadTab[message.room]).emit('sendVolume', message);
   });
 
-  socket.on('sendTime', (message) => {
+  socket.on('sendTime', message => {
+    console.log(message);
     io.to(activeDownloadTab[message.room]).emit('sendTime', message);
   });
 
   socket.on('disconnect', () => {
-    Object.keys(activeDownloadTab).forEach((room) => {
+    Object.keys(activeDownloadTab).forEach(room => {
       if (activeDownloadTab[room] === socket.id) {
         console.log(`${socket.id} s'est déconnecté dans la room ${room}`);
         delete activeDownloadTab[room];
@@ -121,10 +140,13 @@ io.sockets.on('connection', (socket) => {
   });
 });
 
-
 /* Start server */
 server.listen(app.get('port'), () => {
-  console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
+  console.log(
+    'Express server listening on port %d in %s mode',
+    app.get('port'),
+    app.get('env')
+  );
 });
 
 export default app;

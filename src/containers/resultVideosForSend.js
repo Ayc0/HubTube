@@ -22,7 +22,10 @@ class ResultVideosForSend extends Component {
 
   componentDidMount() {
     this.props.socket.on('receiveVideo', this.receiveVideo);
-    this.props.socket.on('receiveVideoForPlaylist', this.receiveVideoForPlaylist);
+    this.props.socket.on(
+      'receiveVideoForPlaylist',
+      this.receiveVideoForPlaylist
+    );
   }
 
   receiveVideo(message) {
@@ -65,10 +68,12 @@ class ResultVideosForSend extends Component {
 
   render() {
     return (
-      <div style={{
-        padding: this.props.list.length === 0 ? 0 : '1em',
-        marginTop: '-3em',
-      }}>
+      <div
+        style={{
+          padding: this.props.list.length === 0 ? 0 : '1em',
+          marginTop: '-3em',
+        }}
+      >
         <VideosList
           list={this.props.list}
           send={this.sendVideo}

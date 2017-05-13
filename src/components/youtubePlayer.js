@@ -4,7 +4,8 @@ import { Card, CardMedia, CardHeader } from 'material-ui/Card';
 
 const opts = {
   width: '100%',
-  playerVars: { // https://developers.google.com/youtube/player_parameters
+  playerVars: {
+    // https://developers.google.com/youtube/player_parameters
     autoplay: 1,
   },
 };

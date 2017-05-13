@@ -4,7 +4,11 @@ import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
 import { styled } from 'styletron-react';
 
-import { searchVideos, searchVideosSuggestions, searchVideosRelatedToVideoId } from '../actions/youtubeAPI';
+import {
+  searchVideos,
+  searchVideosSuggestions,
+  searchVideosRelatedToVideoId,
+} from '../actions/youtubeAPI';
 
 import SearchBar from '../components/searchBar';
 import CurrentVideo from './currentVideo';
@@ -28,25 +32,38 @@ const CurrentVideoStyled = styled(CurrentVideo, () => ({
   },
 }));
 
+const VideoContainer = styled('div', () => ({
+  '@media (min-width: 480px)': {
+    flexDirection: 'row',
+  },
+  '@media (max-width: 480px)': {
+    flexDirection: 'column',
+  },
+  display: 'flex',
+  alignItems: 'stretch',
+  marginTop: '1em',
+}));
+
 class Download extends Component {
   render() {
     return (
       <Container>
-        <SearchBar submit={this.props.searchVideos}
+        <SearchBar
+          submit={this.props.searchVideos}
           onTextChange={this.props.searchVideosSuggestions}
           dataSource={this.props.searchVideosSuggestionsList}
         />
-        <div style={{ display: 'flex', alignItems: 'stretch', marginTop: '1em', flexDirection: window.matchMedia('(min-width: 480px)').matches ? 'row' : 'column' }}>
+        <div style={{ height: '3em' }} />
+        <ResultVideosForSend list={this.props.searchVideosList} />
+        <VideoContainer>
           <CurrentVideoStyled
             updateRelated={this.props.searchVideosRelatedToVideoId}
             relatedVideosList={this.props.searchVideosRelatedList}
           />
-          { this.props.searchVideosRelatedList.length !== 0 ?
-            <ListRelatedVideos list={this.props.searchVideosRelatedList}/> : ''
-          }
-        </div>
-        <div style={{ height: '3em' }} />
-        <ResultVideosForSend list={this.props.searchVideosList} />
+          {this.props.searchVideosRelatedList.length !== 0
+            ? <ListRelatedVideos list={this.props.searchVideosRelatedList} />
+            : ''}
+        </VideoContainer>
       </Container>
     );
   }
@@ -60,13 +77,15 @@ function mapStateToProps(state) {
   };
 }
 
-
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    searchVideos,
-    searchVideosSuggestions,
-    searchVideosRelatedToVideoId,
-  }, dispatch);
+  return bindActionCreators(
+    {
+      searchVideos,
+      searchVideosSuggestions,
+      searchVideosRelatedToVideoId,
+    },
+    dispatch
+  );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Download);

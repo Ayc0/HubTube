@@ -42,8 +42,10 @@ export default class SearchBar extends Component {
       <form onSubmit={this.handleSubmit}>
         <Toolbar>
           <ToolbarGroup style={{ width: 'calc(100% - 48px - 1em)' }}>
-            <AutoComplete hintText="Search" underlineShow={false}
-              onUpdateInput={(newValue) => {
+            <AutoComplete
+              hintText="Search"
+              underlineShow={false}
+              onUpdateInput={newValue => {
                 this.handleChange(newValue);
                 this.onTextChange(newValue);
               }}

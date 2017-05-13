@@ -7,7 +7,12 @@ class CurrentVideo extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { video: {}, videoQueue: [], target: {}, targetId: 0 };
+    this.state = {
+      video: {},
+      videoQueue: [],
+      target: {},
+      targetId: 0,
+    };
     this.receiveVideo = this.receiveVideo.bind(this);
     this.onEnd = this.onEnd.bind(this);
     this.onReady = this.onReady.bind(this);

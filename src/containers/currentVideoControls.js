@@ -81,7 +81,7 @@ class CurrentVideoControls extends Component {
         duration: message.duration,
         time: message.time,
         volume: message.volume,
-        isMuted: message.isMuted,
+        mute: message.isMuted,
         play: message.play,
         title: message.title,
       });
@@ -113,14 +113,18 @@ class CurrentVideoControls extends Component {
         <Toolbar style={{ backgroundColor: this.backgroundColor }}>
           <ToolbarGroup style={{ width: '100%' }}>
             <IconButton touch={true} onTouchTap={this.togglePlayPause}>
-             { this.state.play ? <Pause color={this.color} /> : <Play color={this.color} /> }
+              {this.state.play
+                ? <Pause color={this.color} />
+                : <Play color={this.color} />}
             </IconButton>
             <IconButton touch={true} onTouchTap={this.sendNext}>
               <Next color={this.color} />
             </IconButton>
             <VolumeBar>
               <IconButton touch={true} onTouchTap={this.toggleMute}>
-                {this.state.mute ? <Mute color={this.color} /> : <Volume color={this.color} />}
+                {this.state.mute
+                  ? <Mute color={this.color} />
+                  : <Volume color={this.color} />}
               </IconButton>
               <Slider
                 value={this.state.volume}
@@ -128,13 +132,16 @@ class CurrentVideoControls extends Component {
                 onChange={this.handleChangeVolume}
               />
             </VolumeBar>
-            <ToolbarTitle text={this.state.title} style={{
-              color: this.color,
-              marginLeft: '1em',
-              overflowX: 'hidden',
-              flexGrow: 1,
-              width: 'calc(100% - 208px)',
-            }}/>
+            <ToolbarTitle
+              text={this.state.title}
+              style={{
+                color: this.color,
+                marginLeft: '1em',
+                overflowX: 'hidden',
+                flexGrow: 1,
+                width: 'calc(100% - 208px)',
+              }}
+            />
           </ToolbarGroup>
         </Toolbar>
         <Slider
@@ -147,6 +154,5 @@ class CurrentVideoControls extends Component {
     );
   }
 }
-
 
 export default socketConnect(CurrentVideoControls);
