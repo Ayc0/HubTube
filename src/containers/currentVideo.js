@@ -1,7 +1,21 @@
 import React, { Component } from 'react';
 import { socketConnect } from 'socket.io-react';
+import { styled } from 'styletron-react';
 
 import YoutubePlayer from '../components/youtubePlayer';
+import PanelListVideos from '../components/panelListVideos';
+
+const VideoContainer = styled('div', () => ({
+  '@media (min-width: 480px)': {
+    flexDirection: 'row',
+  },
+  '@media (max-width: 480px)': {
+    flexDirection: 'column',
+  },
+  display: 'flex',
+  alignItems: 'stretch',
+  marginTop: '1em',
+}));
 
 class CurrentVideo extends Component {
   constructor(props) {
@@ -45,7 +59,9 @@ class CurrentVideo extends Component {
   }
 
   addToPlaylist(message) {
-    this.setState({ videoQueue: [...this.state.videoQueue, message.video] });
+    this.setState(prevState => ({
+      videoQueue: [...prevState.videoQueue, message.video],
+    }));
     this.props.socket.emit('receiveVideoForPlaylist', {
       id: message.id,
       received: true,
@@ -58,7 +74,9 @@ class CurrentVideo extends Component {
     if (typeof nextVideo === 'undefined') {
       nextVideo = this.props.relatedVideosList[0];
     } else {
-      this.setState({ videoQueue: this.state.videoQueue.slice(1) });
+      this.setState(prevState => ({
+        videoQueue: prevState.videoQueue.slice(1),
+      }));
     }
     this.setState({ video: nextVideo });
     this.props.updateRelated(nextVideo.id.videoId);
@@ -67,7 +85,10 @@ class CurrentVideo extends Component {
   onReady(event) {
     const target = event.target;
     if (this.state.video.id.videoId !== this.state.targetId) {
-      this.setState({ target, targetId: this.state.video.id.videoId });
+      this.setState(prevState => ({
+        target,
+        targetId: prevState.video.id.videoId,
+      }));
       clearInterval(this.interval);
       this.interval = setInterval(this.getData, 500);
     }
@@ -120,14 +141,20 @@ class CurrentVideo extends Component {
       return <div />;
     }
     return (
-      <YoutubePlayer
-        videoId={this.state.video.id.videoId}
-        title={this.state.video.snippet.title}
-        subtitle={this.state.video.snippet.channelTitle}
-        avatar={this.state.video.snippet.thumbnails.high.url}
-        onEnd={this.onEnd}
-        onReady={this.onReady}
-      />
+      <VideoContainer>
+        <YoutubePlayer
+          videoId={this.state.video.id.videoId}
+          title={this.state.video.snippet.title}
+          subtitle={this.state.video.snippet.channelTitle}
+          avatar={this.state.video.snippet.thumbnails.high.url}
+          onEnd={this.onEnd}
+          onReady={this.onReady}
+        />
+        <PanelListVideos
+          queueList={this.state.videoQueue}
+          relatedList={this.props.relatedVideosList}
+        />
+      </VideoContainer>
     );
   }
 }

@@ -12,7 +12,6 @@ import {
 
 import SearchBar from '../components/searchBar';
 import CurrentVideo from './currentVideo';
-import ListRelatedVideos from '../components/listRelatedVideos';
 import ResultVideosForSend from './resultVideosForSend';
 
 const Container = styled(Paper, () => ({
@@ -22,27 +21,27 @@ const Container = styled(Paper, () => ({
   padding: '1rem',
 }));
 
-const CurrentVideoStyled = styled(CurrentVideo, () => ({
-  '@media (min-width: 480px)': {
-    maxWidth: '640px',
-    width: '70%',
-  },
-  '@media (max-width: 480px)': {
-    width: '100%',
-  },
-}));
+// const CurrentVideoStyled = styled(CurrentVideo, () => ({
+//   '@media (min-width: 480px)': {
+//     maxWidth: '640px',
+//     width: '70%',
+//   },
+//   '@media (max-width: 480px)': {
+//     width: '100%',
+//   },
+// }));
 
-const VideoContainer = styled('div', () => ({
-  '@media (min-width: 480px)': {
-    flexDirection: 'row',
-  },
-  '@media (max-width: 480px)': {
-    flexDirection: 'column',
-  },
-  display: 'flex',
-  alignItems: 'stretch',
-  marginTop: '1em',
-}));
+// const VideoContainer = styled('div', () => ({
+//   '@media (min-width: 480px)': {
+//     flexDirection: 'row',
+//   },
+//   '@media (max-width: 480px)': {
+//     flexDirection: 'column',
+//   },
+//   display: 'flex',
+//   alignItems: 'stretch',
+//   marginTop: '1em',
+// }));
 
 class Download extends Component {
   render() {
@@ -55,15 +54,10 @@ class Download extends Component {
         />
         <div style={{ height: '3em' }} />
         <ResultVideosForSend list={this.props.searchVideosList} />
-        <VideoContainer>
-          <CurrentVideoStyled
-            updateRelated={this.props.searchVideosRelatedToVideoId}
-            relatedVideosList={this.props.searchVideosRelatedList}
-          />
-          {this.props.searchVideosRelatedList.length !== 0
-            ? <ListRelatedVideos list={this.props.searchVideosRelatedList} />
-            : ''}
-        </VideoContainer>
+        <CurrentVideo
+          updateRelated={this.props.searchVideosRelatedToVideoId}
+          relatedVideosList={this.props.searchVideosRelatedList}
+        />
       </Container>
     );
   }

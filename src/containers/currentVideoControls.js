@@ -77,14 +77,14 @@ class CurrentVideoControls extends Component {
 
   getVideoData(message) {
     if (message.room === document.location.pathname) {
-      this.setState({
+      this.setState(prevState => ({
         duration: message.duration,
-        time: message.time,
-        volume: message.volume,
+        time: message.time ? message.time : prevState.time,
+        volume: message.volume ? message.volume : prevState.volume,
         mute: message.isMuted,
         play: message.play,
         title: message.title,
-      });
+      }));
     }
   }
 
