@@ -69,7 +69,7 @@ class CurrentVideo extends Component {
     if (this.state.video.id.videoId !== this.state.targetId) {
       this.setState({ target, targetId: this.state.video.id.videoId });
       clearInterval(this.interval);
-      this.interval = setInterval(this.getData, 2000);
+      this.interval = setInterval(this.getData, 500);
     }
   }
 

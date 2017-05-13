@@ -23,7 +23,6 @@ const activeDownloadTab = {};
 /* Socket.io Communication */
 const io = sockerIo.listen(server);
 io.sockets.on('connection', socket => {
-  console.log(socket);
   console.log(`${socket.id} s'est connecté.`);
 
   // Envoie un message de bienvenue et donne l'id aux clients
