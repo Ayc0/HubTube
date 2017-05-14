@@ -82,7 +82,7 @@ io.sockets.on('connection', socket => {
 
   socket.on('receiveVideo', message => {
     console.log(`La vidéo a été reçue dans la room ${message.room}`);
-    io.to(message.id).emit('receiveVideo', message);
+    io.to(message.to).emit('receiveVideo', message);
   });
 
   socket.on('addVideoToPlaylist', message => {
@@ -96,7 +96,7 @@ io.sockets.on('connection', socket => {
     console.log(
       `La vidéo a été ajoutée à la playlist dans la room ${message.room}`
     );
-    io.to(message.id).emit('receiveVideoForPlaylist', message);
+    io.to(message.to).emit('receiveVideoForPlaylist', message);
   });
 
   socket.on('videoData', message => {

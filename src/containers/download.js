@@ -44,6 +44,16 @@ const Container = styled(Paper, () => ({
 // }));
 
 class Download extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { displayResults: false };
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.searchVideosList !== this.props.searchVideosList) {
+      this.setState({ displayResults: true });
+    }
+  }
   render() {
     return (
       <Container>
@@ -52,8 +62,15 @@ class Download extends Component {
           onTextChange={this.props.searchVideosSuggestions}
           dataSource={this.props.searchVideosSuggestionsList}
         />
-        <div style={{ height: '3em' }} />
-        <ResultVideosForSend list={this.props.searchVideosList} />
+        {this.state.displayResults
+          ? <div>
+              <div style={{ height: '3em' }} />
+              <ResultVideosForSend
+                onSend={() => this.setState({ displayResults: false })}
+                list={this.props.searchVideosList}
+              />
+            </div>
+          : null}
         <CurrentVideo
           updateRelated={this.props.searchVideosRelatedToVideoId}
           relatedVideosList={this.props.searchVideosRelatedList}

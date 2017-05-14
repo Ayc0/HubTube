@@ -51,7 +51,8 @@ class CurrentVideo extends Component {
   receiveVideo(message) {
     this.setState({ video: message.video });
     this.props.socket.emit('receiveVideo', {
-      id: message.id,
+      id: this.props.socket.id,
+      to: message.id,
       received: true,
       room: document.location.pathname,
     });
@@ -63,7 +64,8 @@ class CurrentVideo extends Component {
       videoQueue: [...prevState.videoQueue, message.video],
     }));
     this.props.socket.emit('receiveVideoForPlaylist', {
-      id: message.id,
+      id: this.props.socket.id,
+      to: message.id,
       received: true,
       room: document.location.pathname,
     });

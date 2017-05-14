@@ -29,14 +29,14 @@ class ResultVideosForSend extends Component {
   }
 
   receiveVideo(message) {
-    if (message.received) {
+    if (message.received && message.id !== this.props.socket.id) {
       this.setState({ showPopupVideo: true });
       setTimeout(this.closePopupVideo, 1000);
     }
   }
 
   receiveVideoForPlaylist(message) {
-    if (message.received) {
+    if (message.received && message.id !== this.props.socket.id) {
       this.setState({ showPopupPlaylist: true });
       setTimeout(this.closePopupPlaylist, 1000);
     }
@@ -51,6 +51,9 @@ class ResultVideosForSend extends Component {
   }
 
   sendVideo(video) {
+    if (this.props.onSend) {
+      setTimeout(() => this.props.onSend(), 300);
+    }
     this.props.socket.emit('sendVideo', {
       video,
       id: this.props.socket.id,
