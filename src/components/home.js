@@ -33,7 +33,7 @@ export default class Home extends Component {
               color: '#cc181e',
             }}
           >
-            HubTube.tk&nbsp;/
+            hubtube.tk&nbsp;/
           </p>
           <form style={{ flexGrow: 1 }} onSubmit={this.handleSubmit}>
             <TextField

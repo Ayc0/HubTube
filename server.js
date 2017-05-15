@@ -8,6 +8,9 @@ const server = http.createServer(app);
 /* Configuration */
 
 app.use(express.static(`${__dirname}/build`));
+// app.get('/browserconfig.xml', (_, res) => {
+//   res.sendFile(`${__dirname}/build/browserconfig.xml`);
+// });
 app.use((req, res) => {
   res.sendFile(`${__dirname}/build/index.html`);
 });
