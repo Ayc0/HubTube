@@ -112,8 +112,22 @@ class CurrentVideoControls extends Component {
   render() {
     return (
       <div>
-        <Toolbar style={{ backgroundColor: this.backgroundColor }}>
-          <ToolbarGroup style={{ width: '100%' }}>
+        <Toolbar
+          style={{
+            backgroundColor: this.backgroundColor,
+            height: window.matchMedia('(min-width: 600px)').matches
+              ? '56px'
+              : '120px',
+          }}
+        >
+          <ToolbarGroup
+            style={{
+              width: '100%',
+              flexWrap: window.matchMedia('(min-width: 600px)').matches
+                ? 'nowrap'
+                : 'wrap-reverse',
+            }}
+          >
             <IconButton touch={true} onTouchTap={this.togglePlayPause}>
               {this.state.play
                 ? <Pause color={this.color} />
