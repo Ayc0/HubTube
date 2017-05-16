@@ -10,6 +10,8 @@ import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
 import { socketConnect } from 'socket.io-react';
 import { styled } from 'styletron-react';
 
+import ScrollingText from '../components/scrollingText';
+
 const VolumeBar = styled('div', () => ({
   display: 'flex',
   flexDirection: 'row',
@@ -133,7 +135,14 @@ class CurrentVideoControls extends Component {
               />
             </VolumeBar>
             <ToolbarTitle
-              text={this.state.title}
+              text={
+                <ScrollingText
+                  text={this.state.title}
+                  lineHeight="56px"
+                  fontSize="20px"
+                  top={0}
+                />
+              }
               style={{
                 color: this.color,
                 marginLeft: '1em',

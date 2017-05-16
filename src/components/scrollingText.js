@@ -27,6 +27,10 @@ export default class ScrollingText extends Component {
     this.computeDistanceScroll();
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.computeDistanceScroll();
+  }
+
   computeDistanceScroll() {
     const parent = findDOMNode(this.refs.parent);
     const child = findDOMNode(this.refs.child);
@@ -57,9 +61,10 @@ export default class ScrollingText extends Component {
             position: 'absolute',
             transform: `translateX(${this.state.translate})`,
             animation: `scroll-left-tiles ${this.state.duration}s cubic-bezier(0.7, 0.01, 0.45, 1) infinite`,
-            marginTop: `calc((${this.props.lineHeight} - ${this.props.fontSize}) / 2)`,
-            fontSize: this.props.fontSize,
             top: 0,
+            marginTop: this.props.top,
+            fontSize: this.props.fontSize,
+            fontWeight: this.props.bold ? 'bold' : 'normal',
           }}
           ref="child"
         >

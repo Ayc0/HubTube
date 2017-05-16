@@ -29,6 +29,8 @@ export default props => {
           text={props.video.snippet.title}
           lineHeight="32px"
           fontSize="16px"
+          top="8px"
+          bold
         />
       }
       subtitle={props.video.snippet.channelTitle}
