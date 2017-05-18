@@ -15,7 +15,7 @@ app.use((req, res) => {
   res.sendFile(`${__dirname}/build/index.html`);
 });
 
-app.set('port', 8000);
+app.set('port', 8765);
 
 if (process.env.NODE_ENV === 'development') {
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
