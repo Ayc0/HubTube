@@ -22,7 +22,7 @@ import Home from './components/home';
 
 const createStoreWithMiddleware = applyMiddleware(ReduxPromise)(createStore);
 
-const socket = io.connect('hubtube.tk:8765');
+const socket = io.connect(process.env.BACKEND_URL);
 
 const muiTheme = getMuiTheme({
   palette: {
