@@ -32,7 +32,7 @@ export const searchVideosSuggestions = query => {
       payload: [],
     };
   }
-  const fullUrl = `http://suggestqueries.google.com/complete/search?hl=fr&ds=yt&client=youtube&hjson=t&cp=1&q=${query}`;
+  const fullUrl = `https://suggestqueries.google.com/complete/search?hl=fr&ds=yt&client=youtube&hjson=t&cp=1&q=${query}`;
   return {
     type: SEARCH_VIDEOS_SUGGESTIONS,
     payload: get(fullUrl),
