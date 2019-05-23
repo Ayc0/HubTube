@@ -1,24 +1,21 @@
 module.exports = {
-  extends: ['airbnb-base', 'prettier'],
-  installedESLint: true,
-  'no-unused-vars': 0,
+  extends: ['airbnb', 'prettier'],
   plugins: ['react'],
   env: {
     browser: true,
-    jest: true,
+    jest: true
   },
   parserOptions: {
     ecmaFeatures: {
-      jsx: true,
-    },
+      jsx: true
+    }
   },
   parser: 'babel-eslint',
   rules: {
-    'react/jsx-filename-extension': 0,
-    'react/no-unused-prop-types': 0,
-    'react/no-named-default': 0,
-    'react/jsx-uses-react': 'error',
-    'react/jsx-uses-vars': 'error',
     'no-underscore-dangle': 'off',
-  },
+    'prefer-destructuring': 'warn',
+    'react/destructuring-assignment': 'warn',
+    'react/prop-types': 'off',
+    'react/jsx-filename-extension': 'off'
+  }
 };
