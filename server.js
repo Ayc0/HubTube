@@ -1,6 +1,6 @@
 import express from 'express';
 import http from 'http';
-import sockerIo from 'socket.io';
+import socketIO from 'socket.io';
 
 const app = express();
 const server = http.createServer(app);
@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === 'development') {
 const activeDownloadTab = {};
 
 /* Socket.io Communication */
-const io = sockerIo.listen(server);
+const io = socketIO.listen(server);
 io.sockets.on('connection', socket => {
   console.log(`${socket.id} s'est connecté.`);
 
@@ -51,7 +51,7 @@ io.sockets.on('connection', socket => {
     socket.join(message.room);
     if (typeof activeDownloadTab[message.room] !== 'undefined') {
       console.log(
-        `${message.id} est sur l'onglet dans la room ${message.room}`
+        `${message.id} est sur l'onglet dans la room ${message.room}`,
       );
       socket.emit('replyForDownload', {
         canChangeTab: false,
@@ -64,7 +64,7 @@ io.sockets.on('connection', socket => {
     if (message.canChangeTab) {
       if (message.id === activeDownloadTab[message.room]) {
         console.log(
-          `${message.id} a libéré l'onglet dans la room ${message.room}`
+          `${message.id} a libéré l'onglet dans la room ${message.room}`,
         );
         delete activeDownloadTab[message.room];
         socket.in(message.room).broadcast.emit('handleDownloadState', message);
@@ -78,7 +78,9 @@ io.sockets.on('connection', socket => {
 
   socket.on('sendVideo', message => {
     console.log(
-      `La vidéo ${message.video.id.videoId} a été envoyée dans la room ${message.room}`
+      `La vidéo ${message.video.id.videoId} a été envoyée dans la room ${
+        message.room
+      }`,
     );
     io.to(activeDownloadTab[message.room]).emit('sendVideo', message);
   });
@@ -90,14 +92,16 @@ io.sockets.on('connection', socket => {
 
   socket.on('addVideoToPlaylist', message => {
     console.log(
-      `La vidéo ${message.video.id.videoId} a été ajoutée à la playlist dans la room ${message.room}`
+      `La vidéo ${
+        message.video.id.videoId
+      } a été ajoutée à la playlist dans la room ${message.room}`,
     );
     io.to(activeDownloadTab[message.room]).emit('addVideoToPlaylist', message);
   });
 
   socket.on('receiveVideoForPlaylist', message => {
     console.log(
-      `La vidéo a été ajoutée à la playlist dans la room ${message.room}`
+      `La vidéo a été ajoutée à la playlist dans la room ${message.room}`,
     );
     io.to(message.to).emit('receiveVideoForPlaylist', message);
   });
@@ -147,7 +151,7 @@ server.listen(app.get('port'), () => {
   console.log(
     'Express server listening on port %d in %s mode',
     app.get('port'),
-    app.get('env')
+    app.get('env'),
   );
 });
 

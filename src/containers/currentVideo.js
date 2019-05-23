@@ -85,7 +85,7 @@ class CurrentVideo extends Component {
   }
 
   onReady(event) {
-    const target = event.target;
+    const {target} = event;
     if (this.state.video.id.videoId !== this.state.targetId) {
       this.setState(prevState => ({
         target,

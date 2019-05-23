@@ -51,7 +51,7 @@ export default class SearchBar extends Component {
               }}
               dataSource={dataSource}
               value={this.state.query}
-              fullWidth={true}
+              fullWidth
             />
           </ToolbarGroup>
           <ToolbarGroup>

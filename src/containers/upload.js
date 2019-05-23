@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
@@ -12,32 +12,30 @@ import CurrentVideoControls from './currentVideoControls';
 
 const Container = styled(Paper, () => ({
   '@media (min-width: 480px)': {
-    margin: '2em',
+    margin: '2em'
   },
-  padding: '1rem',
+  padding: '1rem'
 }));
 
-class Upload extends Component {
-  render() {
-    return (
-      <Container>
-        <SearchBar
-          submit={this.props.searchVideos}
-          onTextChange={this.props.searchVideosSuggestions}
-          dataSource={this.props.searchVideosSuggestionsList}
-        />
-        <br />
-        <CurrentVideoControls />
-        <ResultVideosForSend list={this.props.searchVideosList} />
-      </Container>
-    );
-  }
-}
+const Upload = props => {
+  return (
+    <Container>
+      <SearchBar
+        submit={props.searchVideos}
+        onTextChange={props.searchVideosSuggestions}
+        dataSource={props.searchVideosSuggestionsList}
+      />
+      <br />
+      <CurrentVideoControls />
+      <ResultVideosForSend list={props.searchVideosList} />
+    </Container>
+  );
+};
 
 function mapStateToProps(state) {
   return {
     searchVideosList: state.searchVideosList,
-    searchVideosSuggestionsList: state.searchVideosSuggestionsList,
+    searchVideosSuggestionsList: state.searchVideosSuggestionsList
   };
 }
 
@@ -48,4 +46,7 @@ function mapDispatchToProps(dispatch) {
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Upload);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Upload);

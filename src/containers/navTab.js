@@ -13,7 +13,7 @@ class TabNav extends Component {
     this.state = {
       slideIndex: 0,
       id: -1,
-      canChangeTab: true,
+      canChangeTab: true
     };
 
     this.pathname = document.location.pathname;
@@ -33,13 +33,13 @@ class TabNav extends Component {
       if (this.state.slideIndex === 0) {
         this.props.socket.emit('askForDownload', {
           id: msg.id,
-          room: this.pathname,
+          room: this.pathname
         });
       } else {
         this.props.socket.emit('initializeOnTab', {
           id: msg.id,
           canChangeTab: false,
-          room: this.pathname,
+          room: this.pathname
         });
       }
     });
@@ -50,17 +50,21 @@ class TabNav extends Component {
       this.setState({ slideIndex: 0, canChangeTab: false });
     }
   }
+
   handleChangeTab(value) {
     this.setState({ slideIndex: value });
   }
+
   replyForDownload(message) {
     if (message.room === this.pathname) {
       this.setState({ canChangeTab: message.canChangeTab });
     }
   }
+
   handleDownloadState(message) {
     this.setState({ canChangeTab: message.canChangeTab });
   }
+
   shouldComponentUpdate(nextProps, nextState) {
     if (
       this.state.slideIndex !== nextState.slideIndex &&
@@ -70,7 +74,7 @@ class TabNav extends Component {
         this.props.socket.emit('handleDownloadState', {
           id: this.props.socket.id,
           canChangeTab: false,
-          room: this.pathname,
+          room: this.pathname
         });
       } else {
         nextState.slideIndex = 0;
@@ -83,7 +87,7 @@ class TabNav extends Component {
       this.props.socket.emit('handleDownloadState', {
         id: this.props.socket.id,
         canChangeTab: true,
-        room: this.pathname,
+        room: this.pathname
       });
     }
     return true;
@@ -94,16 +98,18 @@ class TabNav extends Component {
       <div>
         <Tabs onChange={this.handleChangeTab} value={this.state.slideIndex}>
           <Tab icon={<Upload />} value={0} />
-          {this.state.canChangeTab
-            ? <Tab icon={<Download />} value={1} />
-            : <Tab
-                icon={this.state.canChangeTab ? <Download /> : <Block />}
-                value={1}
-                style={{
-                  backgroundColor: '#6b6b6b',
-                  cursor: 'not-allowed',
-                }}
-              />}
+          {this.state.canChangeTab ? (
+            <Tab icon={<Download />} value={1} />
+          ) : (
+            <Tab
+              icon={this.state.canChangeTab ? <Download /> : <Block />}
+              value={1}
+              style={{
+                backgroundColor: '#6b6b6b',
+                cursor: 'not-allowed'
+              }}
+            />
+          )}
         </Tabs>
         <SwipeableViews
           index={this.state.slideIndex}

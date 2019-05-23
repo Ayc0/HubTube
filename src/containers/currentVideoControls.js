@@ -128,16 +128,16 @@ class CurrentVideoControls extends Component {
                 : 'wrap-reverse',
             }}
           >
-            <IconButton touch={true} onTouchTap={this.togglePlayPause}>
+            <IconButton touch onTouchTap={this.togglePlayPause}>
               {this.state.play
                 ? <Pause color={this.color} />
                 : <Play color={this.color} />}
             </IconButton>
-            <IconButton touch={true} onTouchTap={this.sendNext}>
+            <IconButton touch onTouchTap={this.sendNext}>
               <Next color={this.color} />
             </IconButton>
             <VolumeBar>
-              <IconButton touch={true} onTouchTap={this.toggleMute}>
+              <IconButton touch onTouchTap={this.toggleMute}>
                 {this.state.mute
                   ? <Mute color={this.color} />
                   : <Volume color={this.color} />}
@@ -149,14 +149,14 @@ class CurrentVideoControls extends Component {
               />
             </VolumeBar>
             <ToolbarTitle
-              text={
+              text={(
                 <ScrollingText
                   text={this.state.title}
                   lineHeight="56px"
                   fontSize="20px"
                   top={0}
                 />
-              }
+)}
               style={{
                 color: this.color,
                 marginLeft: '1em',

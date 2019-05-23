@@ -85,14 +85,14 @@ class ResultVideosForSend extends Component {
         <Popup
           showPopup={this.state.showPopupVideo}
           closePopup={this.closePopupVideo}
-          title={'Reception'}
-          text={'La vidéo a été reçue'}
+          title="Reception"
+          text="La vidéo a été reçue"
         />
         <Popup
           showPopup={this.state.showPopupPlaylist}
           closePopup={this.closePopupPlaylist}
-          title={'Playlist'}
-          text={'La vidéo a bien été ajoutée à la playlist'}
+          title="Playlist"
+          text="La vidéo a bien été ajoutée à la playlist"
         />
       </div>
     );

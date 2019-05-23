@@ -49,11 +49,13 @@ class Download extends Component {
 
     this.state = { displayResults: false };
   }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.searchVideosList !== this.props.searchVideosList) {
       this.setState({ displayResults: true });
     }
   }
+
   render() {
     return (
       <Container>
@@ -63,13 +65,15 @@ class Download extends Component {
           dataSource={this.props.searchVideosSuggestionsList}
         />
         {this.state.displayResults
-          ? <div>
+          ? (
+            <div>
               <div style={{ height: '3em' }} />
               <ResultVideosForSend
                 onSend={() => this.setState({ displayResults: false })}
                 list={this.props.searchVideosList}
               />
             </div>
+)
           : null}
         <CurrentVideo
           updateRelated={this.props.searchVideosRelatedToVideoId}

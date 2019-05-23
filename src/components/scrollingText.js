@@ -9,6 +9,7 @@ export default class ScrollingText extends Component {
 
     this.computeDistanceScroll = this.computeDistanceScroll.bind(this);
   }
+
   componentWillMount() {
     if (typeof this.props.send === 'undefined') {
       this.send = query => query;

@@ -1,19 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Provider } from 'react-redux';
+import { Provider as ReduxProvider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import ReduxPromise from 'redux-promise';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import { SocketProvider } from 'socket.io-react';
 import io from 'socket.io-client';
 
-import Styletron from 'styletron-client';
-import { StyletronProvider } from 'styletron-react';
+import { Client as StyletronClient } from 'styletron-engine-atomic';
+import { Provider as StyletronProvider } from 'styletron-react';
 
 import reducers from './reducers';
 
@@ -29,23 +28,22 @@ const muiTheme = getMuiTheme({
     primary1Color: '#cc181e',
   },
 });
-injectTapEventPlugin();
 
 const styleSheet = document.createElement('style');
 document.head.appendChild(styleSheet);
-const styletron = new Styletron([styleSheet]);
+const instance = new StyletronClient({ hydrate: styleSheet, prefix: '_' });
 
 ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
+  <ReduxProvider store={createStoreWithMiddleware(reducers)}>
     <SocketProvider socket={socket}>
       <MuiThemeProvider muiTheme={muiTheme}>
-        <StyletronProvider styletron={styletron}>
+        <StyletronProvider value={instance}>
           <div style={{ WebkitFontSmoothing: 'antialiased' }}>
             {document.location.pathname === '/' ? <Home /> : <App />}
           </div>
         </StyletronProvider>
       </MuiThemeProvider>
     </SocketProvider>
-  </Provider>,
-  document.getElementById('root')
+  </ReduxProvider>,
+  document.getElementById('root'),
 );

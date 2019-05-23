@@ -37,7 +37,7 @@ export default class Home extends Component {
           </p>
           <form style={{ flexGrow: 1 }} onSubmit={this.handleSubmit}>
             <TextField
-              fullWidth={true}
+              fullWidth
               underlineShow={false}
               hintText="Hint Text"
               onChange={(e, value) => {
@@ -57,7 +57,7 @@ export default class Home extends Component {
               document.location.pathname = this.state.room;
             }}
           >
-            <Forward color={'#cc181e'} />
+            <Forward color="#cc181e" />
           </IconButton>
         </div>
       </Paper>

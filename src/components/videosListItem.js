@@ -24,7 +24,7 @@ export default props => {
 
   return (
     <GridTile
-      title={
+      title={(
         <ScrollingText
           text={props.video.snippet.title}
           lineHeight="32px"
@@ -32,9 +32,9 @@ export default props => {
           top="8px"
           bold
         />
-      }
+)}
       subtitle={props.video.snippet.channelTitle}
-      actionIcon={
+      actionIcon={(
         <div style={{ display: 'flex' }}>
           <IconButton onTouchTap={() => addToPlaylist(props.video)}>
             <PlaylistAdd color="white" hoverColor="#d5d5d5" />
@@ -43,7 +43,7 @@ export default props => {
             <Send color="white" hoverColor="#d5d5d5" />
           </IconButton>
         </div>
-      }
+)}
     >
       <img
         src={props.video.snippet.thumbnails.high.url}
