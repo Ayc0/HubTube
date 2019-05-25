@@ -1,6 +1,15 @@
-import fetchJsonp from 'fetch-jsonp';
+import jsonp from 'jsonp';
 
-const get = url => fetchJsonp(url).then(res => res.json());
+const get = url =>
+  new Promise((res, rej) =>
+    jsonp(url, null, (err, data) => {
+      if (err) {
+        rej(err);
+        return;
+      }
+      res(data);
+    }),
+  );
 
 export const SEARCH_VIDEOS = 'SEARCH_VIDEOS';
 export const SEARCH_VIDEOS_SUGGESTIONS = 'SEARCH_VIDEOS_SUGGESTIONS';
