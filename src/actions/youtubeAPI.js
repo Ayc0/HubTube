@@ -16,7 +16,7 @@ export const SEARCH_VIDEOS_SUGGESTIONS = 'SEARCH_VIDEOS_SUGGESTIONS';
 export const SEARCH_VIDEOS_RELATED = 'SEARCH_VIDEOS_RELATED';
 
 const APIKey = 'AIzaSyAo3mg_QRsLrydtaOkINcIlFNrZWr4c4Ak';
-const APIUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&key=${APIKey}&type=video`;
+const APIUrl = `https://developers.google.com/apis-explorer/#p/youtube/v3/youtube.search.list?key=${APIKey}&part=snippet&type=video`;
 
 export const searchVideos = (query, maxResults = 20) => {
   const fullUrl = `${APIUrl}&q=${query}&maxResults=${maxResults}`;
