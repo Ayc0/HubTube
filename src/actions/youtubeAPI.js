@@ -1,15 +1,6 @@
-import jsonp from 'jsonp';
+import axios from 'axios';
 
-const get = url =>
-  new Promise((res, rej) =>
-    jsonp(url, null, (err, data) => {
-      if (err) {
-        rej(err);
-        return;
-      }
-      res(data);
-    }),
-  );
+const get = url => axios.get(url).then(({ data }) => data);
 
 export const SEARCH_VIDEOS = 'SEARCH_VIDEOS';
 export const SEARCH_VIDEOS_SUGGESTIONS = 'SEARCH_VIDEOS_SUGGESTIONS';
